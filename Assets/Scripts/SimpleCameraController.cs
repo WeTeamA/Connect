@@ -13,8 +13,6 @@ namespace UnityTemplateProjects
             public float y;
             public float z;
 
-
-
             public void SetFromTransform(Transform t)
             {
                 pitch = t.eulerAngles.x;
@@ -110,15 +108,6 @@ namespace UnityTemplateProjects
         
         void Update()
         {
-            foreach (Touch touch in Input.touches)
-            {
-                if (touch.phase == TouchPhase.Moved)
-                {
-                    gameObject.transform.position += new Vector3(1*Time.deltaTime, 0, 0);
-                    print(gameObject.transform.position);
-                }
-            }
-            /*
             // Exit Sample  
             if (Input.GetKey(KeyCode.Escape))
             {
@@ -174,7 +163,6 @@ namespace UnityTemplateProjects
             m_InterpolatingCameraState.LerpTowards(m_TargetCameraState, positionLerpPct, rotationLerpPct);
 
             m_InterpolatingCameraState.UpdateTransform(transform);
-            */
         }
     }
 
