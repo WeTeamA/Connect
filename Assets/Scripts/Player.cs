@@ -8,7 +8,10 @@ public class PlayerStats
     public float StandartSpeed = 1;
     public Vector3 AngularVelocity;
     public Vector3 Velocity;
-    public Vector3 AngleToHookTo;
+    public Vector3 VectorAngleToHookTo;
+    public float AngleToHookTo;
+
+
 
 }
 
@@ -39,7 +42,6 @@ public class Player : MonoBehaviour
         {
             hookTo.Add(gameObject.GetComponent<HookTo>());
         }
-        hookTo[2].gameObject.GetComponent<MeshRenderer>().material.color = Color.red;
 
 
     }
@@ -67,12 +69,18 @@ public class Player : MonoBehaviour
     {
         playerStats.AngularVelocity = GetComponent<Rigidbody>().angularVelocity;
         playerStats.Velocity = GetComponent<Rigidbody>().velocity;
-        playerStats.AngleToHookTo = closestHookTo.transform.forward - transform.forward;
+        //playerStats.AngleToHookTo = GetComponent<Rigidbody>().velocity - transform.forward;
 
     }
 
+
+
+
     void PlayerMovement() //Controlls player movement
     {
+
+
+
         GetComponent<ConstantForce>().force = transform.forward * playerStats.StandartSpeed;
     }
 
@@ -109,12 +117,18 @@ public class Player : MonoBehaviour
 
     //for detecting when to connect to hookTo object
     float LastFrameDist;
+    //Created lookAt object to simulate normal vector. Have no idea, how to do that without
+    GameObject lookAtObj;
 
-    void HookActionHinje() //Connects to closest hookTo
+    void HookActionHinje() //Connects to closest hookTo by hinje joint
     {
         if (Input.GetKeyDown("space"))
         {
             LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer;
+            //
+            lookAtObj = new GameObject();
+            lookAtObj.transform.parent = transform;
+            //
         }
         if (Input.GetKeyUp("space"))
         {
@@ -129,7 +143,61 @@ public class Player : MonoBehaviour
             {
                 if (!gameObject.GetComponent<HingeJoint>())
                 {
-                    gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position);
+
+                    //
+
+                    lookAtObj.transform.LookAt(closestHookTo.transform);
+                    //lookAtObj.transform.position = transform.position;
+
+                    playerStats.AngleToHookTo = Vector3.Angle(lookAtObj.transform.forward, transform.forward) - 90;
+                    playerStats.VectorAngleToHookTo = lookAtObj.transform.forward - transform.forward;
+
+
+                    if(playerStats.AngleToHookTo < 5 && playerStats.AngleToHookTo > -5)
+                    {
+                        gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position);
+                    }
+                    else
+                    {
+                        if (playerStats.Velocity.z > 0)
+                        {
+                            if (closestHookTo.transform.position.y - gameObject.transform.position.y < 0)
+                            {
+                                GetComponent<ConstantForce>().torque = new Vector3(2000, 0, 0); // по часовой
+                                GetComponent<ConstantForce>().force += lookAtObj.transform.forward * 5;
+                            }
+                            else
+                            {
+                                GetComponent<ConstantForce>().torque = new Vector3(-2000, 0, 0); // против часовой
+                                GetComponent<ConstantForce>().force += lookAtObj.transform.forward * 5;
+                            }
+                        }
+                        else
+                        {
+                            if (closestHookTo.transform.position.y - gameObject.transform.position.y < 0)
+                            {
+                                GetComponent<ConstantForce>().torque = new Vector3(-2000, 0, 0); // против часовой
+                                GetComponent<ConstantForce>().force += lookAtObj.transform.forward * 5;
+                            }
+                            else
+                            {
+                                GetComponent<ConstantForce>().torque = new Vector3(2000, 0, 0); // по часовой
+                                GetComponent<ConstantForce>().force += lookAtObj.transform.forward * 5;
+                            }
+                        }/*
+                        if((closestHookTo.transform.position.y - gameObject.transform.position.y) * (closestHookTo.transform.position.z - gameObject.transform.position.z) < 0)
+                        {
+                            GetComponent<ConstantForce>().torque = new Vector3(-2000, 0, 0); // против часовой
+                            GetComponent<ConstantForce>().force += lookAtObj.transform.forward * 5;
+                        }
+                        else
+                        {
+                            GetComponent<ConstantForce>().torque = new Vector3(2000, 0, 0); // по часовой
+                            GetComponent<ConstantForce>().force += lookAtObj.transform.forward * 5;
+                        }*/
+                    }
+                    //
+
                 }
             }
             LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer;
@@ -139,18 +207,30 @@ public class Player : MonoBehaviour
                 GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration;
             }
         }
+
+        //Calculating angle between normal vector and player using LookAt (Sorry) Also makes connecting to hookTo object smoother
+        if (Input.GetKeyDown("space"))
+        {
+            //lookAtObj = new GameObject();
+        }
+        if (Input.GetKey("space"))
+        {
+
+
+        }
+        if (Input.GetKeyUp("space"))
+        {
+            Destroy(lookAtObj);
+            GetComponent<ConstantForce>().torque = Vector3.zero;
+        }
+        //END
+
     }
+
+
 
     void HookActionSpring() //Connects to closest hookTo
     {
-        if (Input.GetKeyDown("space"))
-        {
-            SpringJoint springJoint = gameObject.AddComponent<SpringJoint>();
-            springJoint.anchor = transform.InverseTransformPoint(closestHookTo.transform.position);
-            springJoint.maxDistance = 1;
-            springJoint.spring = 100;
-            springJoint.damper = 10;
-        }
         if (Input.GetKeyUp("space"))
         {
             if (gameObject.GetComponent<SpringJoint>())
@@ -158,9 +238,29 @@ public class Player : MonoBehaviour
                 Destroy(gameObject.GetComponent<SpringJoint>());
             }
         }
+        if (Input.GetKeyDown("space"))
+        {
+            LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer;
+        }
         if (Input.GetKey("space"))
         {
-            GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration;
+            if (closestHookTo.HookToObject.DistanceToPlayer > LastFrameDist)
+            {
+                if (!gameObject.GetComponent<SpringJoint>())
+                {
+                    SpringJoint springJoint = gameObject.AddComponent<SpringJoint>();
+                    springJoint.anchor = transform.InverseTransformPoint(closestHookTo.transform.position);
+                    springJoint.maxDistance = 1;
+                    springJoint.spring = 100;
+                    springJoint.damper = 300;
+                }
+            }
+            LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer;
+
+            if (gameObject.GetComponent<SpringJoint>())
+            {
+                GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration;
+            }
         }
     }
 
