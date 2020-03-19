@@ -17,11 +17,16 @@ public class test : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        i++;
+       
         LastFramePos = transform.position;
-        ResPos = PreFramePos - LastFramePos;
+        ResPos = LastFramePos - PreFramePos;
         if (ResPos != new Vector3(0,0,0))
-        transform.LookAt(ResPos);
+        {
+            transform.rotation = Quaternion.LookRotation(ResPos);
+        }
         PreFramePos = transform.position;
+        
+        //transform.forward = transform.GetComponent<Rigidbody>().velocity;
+
     }
 }

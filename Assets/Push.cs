@@ -14,7 +14,7 @@ public class Push : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        gameObject.SetActive(false);
+        //gameObject.SetActive(false);
     }
 
     // Update is called once per frame
