@@ -14,9 +14,10 @@ public class Rotate : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
+        Hit.Stop();
         Hit.transform.position = collision.transform.position;
         Hit.transform.rotation = collision.transform.rotation;
-        Hit.transform.Rotate(new Vector3(90, 0, 0));
+       // Hit.transform.Rotate(new Vector3(90, 0, 0));
         Hit.Play();
     }
 
