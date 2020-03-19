@@ -74,14 +74,6 @@ public class Player : MonoBehaviour
     void PlayerMovement() //Controlls player movement
     {
         GetComponent<ConstantForce>().force = transform.forward * playerStats.StandartSpeed;
-        if (Input.GetKeyUp("space"))
-        {
-            transform.parent = null;
-        }
-        if (Input.GetKeyDown("space"))
-        {
-            transform.parent = closestHookTo.transform;
-        }
     }
 
 
@@ -114,12 +106,15 @@ public class Player : MonoBehaviour
 
     }
 
+
+    //for detecting when to connect to hookTo object
+    float LastFrameDist;
+
     void HookActionHinje() //Connects to closest hookTo
     {
         if (Input.GetKeyDown("space"))
         {
-            gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position);
-
+            LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer;
         }
         if (Input.GetKeyUp("space"))
         {
@@ -129,8 +124,20 @@ public class Player : MonoBehaviour
             }
         }
         if (Input.GetKey("space"))
-        {
-            GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration;
+        {            
+            if(closestHookTo.HookToObject.DistanceToPlayer > LastFrameDist)
+            {
+                if (!gameObject.GetComponent<HingeJoint>())
+                {
+                    gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position);
+                }
+            }
+            LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer;
+
+            if (gameObject.GetComponent<HingeJoint>())
+            {
+                GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration;
+            }
         }
     }
 
