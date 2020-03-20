@@ -6,13 +6,18 @@ using UnityEngine;
 public class PlayerStats
 {
     public float StandartSpeed = 1;
+    /// <summary>
+    /// Acceleration when rotates to orbit
+    /// </summary>
+    public float MoveAccelerateMultiply = 5;
+    /// <summary>
+    /// Rotation Speed
+    /// </summary>
+    public float RotationForce = 200;
     public Vector3 AngularVelocity;
     public Vector3 Velocity;
-    public Vector3 ElureAngleToHookTo;
-    public float AngleToHookTo;
     public float AngleX;
-    public float AngleY;
-
+    public float AngleToHookTo;
 
 
 
@@ -22,7 +27,7 @@ public class Player : MonoBehaviour
 {
 
     List<HookTo> hookTo; //Contains all hook to objects
-    public PlayerStats playerStats;
+    public PlayerStats playerStats; //Functional and changable properties
     public HookTo closestHookTo; //Closest hook to at that moment
 
 
@@ -42,7 +47,21 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-
+        if (!GetComponent<Rigidbody>()) //Adds ridibody with components
+        {
+            Rigidbody rigidbody = gameObject.AddComponent<Rigidbody>();
+            rigidbody.useGravity = false;
+            rigidbody.angularDrag = 49;
+            rigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+        }
+        if (!GetComponent<ConstantForce>()) //Adds ConstantForce
+        {
+            gameObject.AddComponent<ConstantForce>();
+        }
+        if (!GetComponent<Collider>()) //Adds Collider
+        {
+            gameObject.AddComponent<SphereCollider>();
+        }
         //Finds all hookTo objects by tag
         hookTo = new List<HookTo>();
         foreach(GameObject gameObject in GameObject.FindGameObjectsWithTag("hookTo"))
@@ -74,12 +93,16 @@ public class Player : MonoBehaviour
     }
 
 
-    void StatsCollect()
+    void StatsCollect() //Calculates all stats for player
     {
         playerStats.AngularVelocity = GetComponent<Rigidbody>().angularVelocity;
         playerStats.Velocity = GetComponent<Rigidbody>().velocity;
-        //playerStats.AngleToHookTo = GetComponent<Rigidbody>().velocity - transform.forward;
-
+        if (lookAtObj)
+        {
+            lookAtObj.transform.LookAt(closestHookTo.transform, Vector3.forward);
+        }
+        playerStats.AngleX = (Vector3.SignedAngle(transform.forward, lookAtObj.transform.forward, Vector3.right));
+        playerStats.AngleToHookTo = Vector3.Angle(lookAtObj.transform.forward, transform.forward) - 90;
     }
 
 
@@ -88,18 +111,6 @@ public class Player : MonoBehaviour
     void PlayerMovement() //Controlls player movement
     {
         GetComponent<ConstantForce>().force = transform.forward * playerStats.StandartSpeed;
-
-        playerStats.ElureAngleToHookTo = lookAtObj.transform.eulerAngles - transform.eulerAngles;
-        if (lookAtObj)
-        {
-            lookAtObj.transform.LookAt(closestHookTo.transform, Vector3.forward);
-
-        }
-        playerStats.AngleToHookTo = Vector3.Angle(lookAtObj.transform.forward, transform.forward) - 90;
-        playerStats.AngleX = (Vector3.SignedAngle(transform.forward, lookAtObj.transform.forward, Vector3.right));
-        playerStats.AngleY = (Vector3.SignedAngle(transform.up, lookAtObj.transform.up, Vector3.right));
-
-
     }
 
 
@@ -124,11 +135,11 @@ public class Player : MonoBehaviour
         {
             if (closestHookTo != hookTo[i])
             {
-                closestHookTo.gameObject.GetComponent<MeshRenderer>().material = mat1;
+                closestHookTo.gameObject.GetComponent<MeshRenderer>().material = mat1; //Disable effects here
             }
         }
         closestHookTo = hookTo[i];
-        closestHookTo.gameObject.GetComponent<MeshRenderer>().material = mat2;
+        closestHookTo.gameObject.GetComponent<MeshRenderer>().material = mat2; //Apply effects here
 
     }
 
@@ -141,31 +152,26 @@ public class Player : MonoBehaviour
     {
         if (Input.GetKeyDown("space"))
         {
-            LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer;
+            LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer; //for attach calculations
         }
         if (Input.GetKeyUp("space"))
         {
-            GetComponent<ConstantForce>().torque = Vector3.zero;
+            GetComponent<ConstantForce>().torque = Vector3.zero; //stops rotating
             if (gameObject.GetComponent<HingeJoint>())
             {
-                Destroy(gameObject.GetComponent<HingeJoint>());
+                Destroy(gameObject.GetComponent<HingeJoint>()); //destriys connections
             }
         }
 
         if (Input.GetKey("space"))
         {            
-            if(closestHookTo.HookToObject.DistanceToPlayer > LastFrameDist)
+            if(closestHookTo.HookToObject.DistanceToPlayer > LastFrameDist) //if player moves far away from hookTO
             {
                 if (!gameObject.GetComponent<HingeJoint>())
                 {
-
-                    //lookAtObj.transform.LookAt(closestHookTo.transform);
-                    //playerStats.AngleToHookTo = Vector3.Angle(lookAtObj.transform.forward, transform.forward) - 90;
-                    //playerStats.ElureAngleToHookTo = lookAtObj.transform.eulerAngles - transform.eulerAngles;
-
                     if (playerStats.AngleToHookTo < 10 && playerStats.AngleToHookTo > -10)
                     {
-                        gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position);
+                        gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position); // when to attach
                     }
                     else
                     {
@@ -183,25 +189,22 @@ public class Player : MonoBehaviour
                     }
                 }
             }
-            LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer;
+            LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer; //for attach calculations
 
             if (gameObject.GetComponent<HingeJoint>())
             {
-                GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration;
+                GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration; // Add force when attached
             }
         }
         else
         {
-
+            //if it will still change targets
         }
-
-
-
     }
 
 
 
-    void HookActionSpring() //Connects to closest hookTo
+    void HookActionSpring() //Connects to closest hookTo by spring
     {
         if (Input.GetKeyUp("space"))
         {
