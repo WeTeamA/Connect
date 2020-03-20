@@ -25,6 +25,10 @@ public class HookTo : MonoBehaviour
             rigidbody.useGravity = false;
             rigidbody.isKinematic = true;
         }
+        if (GetComponent<Collider>())
+        {
+            gameObject.AddComponent<MeshCollider>();
+        }
 
         gameObject.tag = "hookTo";  //Allpy's correct tag, so player yag could find it
         HookToObject.player = GameObject.FindGameObjectWithTag("Player");
