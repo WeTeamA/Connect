@@ -194,10 +194,15 @@ public class Player : MonoBehaviour
             {
                 GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration; // Add force when attached
             }
+
+            if (GetComponent<HingeJoint>())
+            {
+                FindClosestObj(); //Searches when already attached
+            }
         }
         else
         {
-            FindClosestObj();
+            FindClosestObj(); //Searched when not attached
         }
     }
 
