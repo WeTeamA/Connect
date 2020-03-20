@@ -77,8 +77,6 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        FindClosestObj();
-        PlayerMovement();
         if (Hinje)
         {
             HookActionHinje();
@@ -87,6 +85,7 @@ public class Player : MonoBehaviour
         {
             HookActionSpring();
         }
+        PlayerMovement();
         StatsCollect();
 
 
@@ -198,7 +197,7 @@ public class Player : MonoBehaviour
         }
         else
         {
-            //if it will still change targets
+            FindClosestObj();
         }
     }
 
