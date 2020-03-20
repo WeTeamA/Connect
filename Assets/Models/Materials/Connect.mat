@@ -20,7 +20,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: "New Material \u2014 \u043A\u043E\u043F\u0438\u044F"
+  m_Name: Connect
   m_Shader: {fileID: -6465566751694194690, guid: d3fd19083a29ba049aaead9b4def023f,
     type: 3}
   m_ShaderKeywords: 
