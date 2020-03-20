@@ -47,6 +47,8 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        tag = "Player";
+
         if (!GetComponent<Rigidbody>()) //Adds ridibody with components
         {
             Rigidbody rigidbody = gameObject.AddComponent<Rigidbody>();
@@ -149,6 +151,87 @@ public class Player : MonoBehaviour
 
     void HookActionHinje() //Connects to closest hookTo by hinje joint
     {
+
+        //For Android
+
+        foreach (Touch touch in Input.touches)
+        {
+            if (Input.touches.Length == 1)
+            {
+                if (touch.phase == TouchPhase.Began)
+                {
+                    // Construct a ray from the current touch coordinates
+                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                    if (Physics.Raycast(ray))
+                    {
+                        LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer; //for attach calculations
+                    }
+                }
+                if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                {
+                    // Construct a ray from the current touch coordinates
+                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                    if (Physics.Raycast(ray))
+                    {
+                        GetComponent<ConstantForce>().torque = Vector3.zero; //stops rotating
+                        if (gameObject.GetComponent<HingeJoint>())
+                        {
+                            Destroy(gameObject.GetComponent<HingeJoint>()); //destriys connections
+                        }
+                    }
+                }
+                if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+                {
+                    // Construct a ray from the current touch coordinates
+                    Ray ray = Camera.main.ScreenPointToRay(touch.position);
+                    if (Physics.Raycast(ray))
+                    {
+                        if (closestHookTo.HookToObject.DistanceToPlayer > LastFrameDist) //if player moves far away from hookTO
+                        {
+                            if (!gameObject.GetComponent<HingeJoint>())
+                            {
+                                if (playerStats.AngleToHookTo < 10 && playerStats.AngleToHookTo > -10)
+                                {
+                                    gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position); // when to attach
+                                }
+                                else
+                                {
+
+                                    if (playerStats.AngleX > 0)
+                                    {
+                                        GetComponent<ConstantForce>().torque = new Vector3(playerStats.RotationForce, 0, 0); // по часовой
+                                        GetComponent<ConstantForce>().force += lookAtObj.transform.forward * playerStats.MoveAccelerateMultiply;
+                                    }
+                                    else
+                                    {
+                                        GetComponent<ConstantForce>().torque = new Vector3(-playerStats.RotationForce, 0, 0); // против часовой
+                                        GetComponent<ConstantForce>().force += lookAtObj.transform.forward * playerStats.MoveAccelerateMultiply;
+                                    }
+                                }
+                            }
+                        }
+                        LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer; //for attach calculations
+
+                        if (gameObject.GetComponent<HingeJoint>())
+                        {
+                            GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration; // Add force when attached
+                        }
+
+                        if (GetComponent<HingeJoint>())
+                        {
+                            FindClosestObj(); //Searches when already attached
+                        }
+                    }
+                }
+            }
+        }
+        if(Input.touches.Length == 0)
+        {
+            FindClosestObj(); //Searches when already attached
+        }
+
+
+        //For PC
         if (Input.GetKeyDown("space"))
         {
             LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer; //for attach calculations
@@ -161,6 +244,7 @@ public class Player : MonoBehaviour
                 Destroy(gameObject.GetComponent<HingeJoint>()); //destriys connections
             }
         }
+
 
         if (Input.GetKey("space"))
         {            
