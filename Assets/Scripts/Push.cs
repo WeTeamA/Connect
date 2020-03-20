@@ -6,7 +6,7 @@ using UnityEngine;
 public class Push : MonoBehaviour
 {
    //public GameObject Snar;
-    public ParticleSystem part;
+    public ParticleSystem Explose;
     // Start is called before the first frame update
     void Start()
     {
@@ -15,8 +15,10 @@ public class Push : MonoBehaviour
 
     private void OnCollisionStay(Collision collision)
     {
-        ParticleSystem p = Instantiate(part);
+        ParticleSystem p = Instantiate(Explose);
         p.transform.position = collision.transform.position;
+        p.transform.rotation = gameObject.transform.rotation;
+        p.transform.Rotate(0, 180, 0);
         p.Play();
         gameObject.SetActive(false);
     }
