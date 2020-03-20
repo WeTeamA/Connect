@@ -18,7 +18,7 @@ public class Push : MonoBehaviour
         ParticleSystem p = Instantiate(part);
         p.transform.position = collision.transform.position;
         p.Play();
-        gameObject.SetActive(false);
+      //  gameObject.SetActive(false);
     }
 
     // Update is called once per frame
