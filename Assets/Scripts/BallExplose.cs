@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
-public class Push : MonoBehaviour
+public class BallExplose : MonoBehaviour
 {
     //public GameObject Snar;
     Vector3 LastFramePos;
