@@ -20,7 +20,7 @@ public class Controller : MonoBehaviour
         {
             if (touch.phase == TouchPhase.Began)
             {
-                Instantiate(Snar).GetComponent<Rigidbody>().AddForce(Vector3.forward * 500000);
+                Instantiate(Snar).GetComponent<Rigidbody>().AddForce(Vector3.forward * 5000);
                 //transform.LookAt(new Vector3(1, 1, 1));
             }
         }

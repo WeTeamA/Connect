@@ -4,7 +4,7 @@
             "typeInfo": {
                 "fullName": "UnityEditor.ShaderGraph.Internal.ColorShaderProperty"
             },
-            "JSONnodeData": "{\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"beba4558-60a6-43b6-b299-bb4672152072\"\n    },\n    \"m_Name\": \"Glow Color\",\n    \"m_DefaultReferenceName\": \"Color_36F3FD2D\",\n    \"m_OverrideReferenceName\": \"\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Precision\": 0,\n    \"m_GPUInstanced\": false,\n    \"m_Hidden\": false,\n    \"m_Value\": {\n        \"r\": 4.271396160125732,\n        \"g\": 31.999996185302736,\n        \"b\": 0.0,\n        \"a\": 0.0\n    },\n    \"m_ColorMode\": 1\n}"
+            "JSONnodeData": "{\n    \"m_Guid\": {\n        \"m_GuidSerialized\": \"beba4558-60a6-43b6-b299-bb4672152072\"\n    },\n    \"m_Name\": \"Glow Color\",\n    \"m_DefaultReferenceName\": \"Color_36F3FD2D\",\n    \"m_OverrideReferenceName\": \"_GlowColor\",\n    \"m_GeneratePropertyBlock\": true,\n    \"m_Precision\": 0,\n    \"m_GPUInstanced\": false,\n    \"m_Hidden\": false,\n    \"m_Value\": {\n        \"r\": 4.271396160125732,\n        \"g\": 31.999996185302736,\n        \"b\": 0.0,\n        \"a\": 0.0\n    },\n    \"m_ColorMode\": 1\n}"
         },
         {
             "typeInfo": {
