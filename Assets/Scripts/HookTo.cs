@@ -19,7 +19,13 @@ public class HookTo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        //HookToObject hookToObject = new HookToObject();
+        if (!GetComponent<Rigidbody>()) //Adds ridibody with components
+        {
+            Rigidbody rigidbody = gameObject.AddComponent<Rigidbody>();
+            rigidbody.useGravity = false;
+            rigidbody.isKinematic = true;
+        }
+
         gameObject.tag = "hookTo";  //Allpy's correct tag, so player yag could find it
         HookToObject.player = GameObject.FindGameObjectWithTag("Player");
 

@@ -33,8 +33,8 @@ public class Player : MonoBehaviour
 
 
     //Testing Grabling Methods
-    [SerializeField] bool Hinje;
-    [SerializeField] bool Spring;
+    [SerializeField] bool Hinje = true;
+    [SerializeField] bool Spring = false;
 
     //Test Only!!!!
     [SerializeField] Material mat1;
