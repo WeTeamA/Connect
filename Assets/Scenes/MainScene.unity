@@ -1179,9 +1179,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerStats:
-    StandartSpeed: 15
-    MoveAccelerateMultiply: 0
-    RotationForce: 0
+    StandartSpeed: 30
+    MoveAccelerateMultiply: 50
+    RotationForce: 10000
     AngularVelocity: {x: 0, y: 0, z: 0}
     Velocity: {x: 0, y: 0, z: 0}
     AngleX: 0
@@ -1206,7 +1206,7 @@ PrefabInstance:
     - target: {fileID: 7474528521721971217, guid: 86882bbb8b534dd42968c746c81a0eaa,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 26
+      value: 28.8
       objectReference: {fileID: 0}
     - target: {fileID: 7474528521721971217, guid: 86882bbb8b534dd42968c746c81a0eaa,
         type: 3}

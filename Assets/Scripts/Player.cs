@@ -177,13 +177,13 @@ public class Player : MonoBehaviour
 
                         if (playerStats.AngleX > 0)
                         {
-                            GetComponent<ConstantForce>().torque = new Vector3(2000, 0, 0); // по часовой
-                            GetComponent<ConstantForce>().force += lookAtObj.transform.forward * 5;
+                            GetComponent<ConstantForce>().torque = new Vector3(playerStats.RotationForce, 0, 0); // по часовой
+                            GetComponent<ConstantForce>().force += lookAtObj.transform.forward * playerStats.MoveAccelerateMultiply;
                         }
                         else
                         {
-                            GetComponent<ConstantForce>().torque = new Vector3(-2000, 0, 0); // против часовой
-                            GetComponent<ConstantForce>().force += lookAtObj.transform.forward * 5;
+                            GetComponent<ConstantForce>().torque = new Vector3(-playerStats.RotationForce, 0, 0); // против часовой
+                            GetComponent<ConstantForce>().force += lookAtObj.transform.forward * playerStats.MoveAccelerateMultiply;
                         }
                     }
                 }
