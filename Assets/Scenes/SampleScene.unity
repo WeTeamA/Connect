@@ -290,6 +290,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 56bbbfad847d5cf4db68c0cb546b882a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!1 &161599442 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: -927199367670048503, guid: 107a4411cc2037a47a641637fca6f443,
+    type: 3}
+  m_PrefabInstance: {fileID: 599107365}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &161599443
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 161599442}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2741c0e62d267104aa3bac5ff9a8aed0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Connected: 0
+  time: 0
+  speed: 0.3
 --- !u!1001 &599107365
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -357,10 +378,25 @@ PrefabInstance:
       propertyPath: m_Materials.Array.data[0]
       value: 
       objectReference: {fileID: 2100000, guid: 52c4e87366855bb48877e7b9f64bf2ba, type: 2}
+    - target: {fileID: -1504981713932161579, guid: 107a4411cc2037a47a641637fca6f443,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -1504981713932161579, guid: 107a4411cc2037a47a641637fca6f443,
+        type: 3}
+      propertyPath: m_CastShadows
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: -927199367670048503, guid: 107a4411cc2037a47a641637fca6f443,
         type: 3}
       propertyPath: m_Name
-      value: Connection (1)
+      value: Connection
+      objectReference: {fileID: 0}
+    - target: {fileID: -927199367670048503, guid: 107a4411cc2037a47a641637fca6f443,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 107a4411cc2037a47a641637fca6f443, type: 3}
@@ -394,7 +430,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e9a0bcc02d9dbf14189d009b8f976b27, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Snar: {fileID: 6204013873017384719, guid: b17f286e36389614fa0850f62fbc8e74, type: 3}
 --- !u!4 &605916014
 Transform:
   m_ObjectHideFlags: 0
