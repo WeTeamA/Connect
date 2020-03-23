@@ -27,14 +27,14 @@ public class Player : MonoBehaviour
 {
 
     List<HookTo> hookTo; //Contains all hook to objects
+    [SerializeField]
+    bool isAndroidControll;
     public PlayerStats playerStats; //Functional and changable properties
     public HookTo closestHookTo; //Closest hook to at that moment
 
 
-
     //Testing Grabling Methods
     [SerializeField] bool Hinje = true;
-    [SerializeField] bool Spring = false;
 
     //Test Only!!!!
     [SerializeField] Material mat1;
@@ -66,7 +66,7 @@ public class Player : MonoBehaviour
         }
         //Finds all hookTo objects by tag
         hookTo = new List<HookTo>();
-        foreach(GameObject gameObject in GameObject.FindGameObjectsWithTag("hookTo"))
+        foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag("hookTo"))
         {
             hookTo.Add(gameObject.GetComponent<HookTo>());
         }
@@ -83,7 +83,7 @@ public class Player : MonoBehaviour
         {
             HookActionHinje();
         }
-        if (Spring)
+        else
         {
             HookActionSpring();
         }
@@ -122,7 +122,7 @@ public class Player : MonoBehaviour
         ChangeClosestObj(0);
         for (int i = 0; i < hookTo.Count; i++)
         {
-            if(hookTo[i].HookToObject.DistanceToPlayer < minDist)
+            if (hookTo[i].HookToObject.DistanceToPlayer < minDist)
             {
                 minDist = hookTo[i].HookToObject.DistanceToPlayer;
                 ChangeClosestObj(i);
@@ -152,89 +152,95 @@ public class Player : MonoBehaviour
     void HookActionHinje() //Connects to closest hookTo by hinje joint
     {
 
+        if (isAndroidControll)
+        {
+            HookAndroid();
+        }
+        else
+        {
+            HookPC();
+        }
+
+
+
+
+
+    }
+
+    void HookPC()
+    {
+        //For PC
+        if (Input.GetKeyDown("space"))
+        {
+            OnDown();
+        }
+
+        if (Input.GetKeyUp("space"))
+        {
+            OnUp();
+        }
+
+        if (Input.GetKey("space"))
+        {
+            OnPress(true);
+        }
+        else
+        {
+            OnPress(false);
+        }
+    }
+
+ 
+
+ 
+    void HookAndroid()
+    {
         //For Android
 
         foreach (Touch touch in Input.touches)
         {
             if (Input.touches.Length == 1)
             {
-                if (touch.phase == TouchPhase.Began)
+                if (touch.phase == TouchPhase.Began) //Started Touch
                 {
-                    LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer; //for attach calculations
-
+                    OnDown();
                 }
-                if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled) //Stopped Touch
                 {
-                    GetComponent<ConstantForce>().torque = Vector3.zero; //stops rotating
-                    if (gameObject.GetComponent<HingeJoint>())
-                    {
-                        Destroy(gameObject.GetComponent<HingeJoint>()); //destriys connections
-                    }
+                    OnUp();
                 }
-                if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary)
+                if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) //OnTouch
                 {
-                    if (closestHookTo.HookToObject.DistanceToPlayer > LastFrameDist) //if player moves far away from hookTO
-                    {
-                        if (!gameObject.GetComponent<HingeJoint>())
-                        {
-                            if (playerStats.AngleToHookTo < 10 && playerStats.AngleToHookTo > -10)
-                            {
-                                gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position); // when to attach
-                            }
-                            else
-                            {
-
-                                if (playerStats.AngleX > 0)
-                                {
-                                    GetComponent<ConstantForce>().torque = new Vector3(playerStats.RotationForce, 0, 0); // по часовой
-                                    GetComponent<ConstantForce>().force += lookAtObj.transform.forward * playerStats.MoveAccelerateMultiply;
-                                }
-                                else
-                                {
-                                    GetComponent<ConstantForce>().torque = new Vector3(-playerStats.RotationForce, 0, 0); // против часовой
-                                    GetComponent<ConstantForce>().force += lookAtObj.transform.forward * playerStats.MoveAccelerateMultiply;
-                                }
-                            }
-                        }
-                    }
-                    LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer; //for attach calculations
-
-                    if (gameObject.GetComponent<HingeJoint>())
-                    {
-                        GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration; // Add force when attached
-                    }
-
-                    if (GetComponent<HingeJoint>())
-                    {
-                        FindClosestObj(); //Searches when already attached
-                    }
+                    OnPress(true);
                 }
             }
         }
-        if(Input.touches.Length == 0)
+        if (Input.touches.Length == 0)
         {
-            FindClosestObj(); //Searches when already attached
+            OnPress(false); //Searches when already attached
         }
+    }
 
 
-        //For PC
-        if (Input.GetKeyDown("space"))
+    void OnDown()
+    {
+        LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer; //for attach calculations
+    }
+
+    void OnUp()
+    {
+        GetComponent<ConstantForce>().torque = Vector3.zero; //stops rotating
+        if (gameObject.GetComponent<HingeJoint>())
         {
-            LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer; //for attach calculations
+            Destroy(gameObject.GetComponent<HingeJoint>()); //destriys connections
         }
-        if (Input.GetKeyUp("space"))
+    }
+
+    void OnPress(bool isPressed)
+    {
+        if (isPressed)
         {
-            GetComponent<ConstantForce>().torque = Vector3.zero; //stops rotating
-            if (gameObject.GetComponent<HingeJoint>())
-            {
-                Destroy(gameObject.GetComponent<HingeJoint>()); //destriys connections
-            }
-        }
-
-
-        if (Input.GetKey("space"))
-        {            
-            if(closestHookTo.HookToObject.DistanceToPlayer > LastFrameDist) //if player moves far away from hookTO
+            if (closestHookTo.HookToObject.DistanceToPlayer > LastFrameDist) //if player moves far away from hookTO
             {
                 if (!gameObject.GetComponent<HingeJoint>())
                 {
@@ -244,7 +250,6 @@ public class Player : MonoBehaviour
                     }
                     else
                     {
-
                         if (playerStats.AngleX > 0)
                         {
                             GetComponent<ConstantForce>().torque = new Vector3(playerStats.RotationForce, 0, 0); // по часовой
@@ -272,8 +277,9 @@ public class Player : MonoBehaviour
         }
         else
         {
-            FindClosestObj(); //Searched when not attached
+            FindClosestObj(); //Searches when already attached
         }
+
     }
 
 
@@ -312,6 +318,4 @@ public class Player : MonoBehaviour
             }
         }
     }
-
-
 }
