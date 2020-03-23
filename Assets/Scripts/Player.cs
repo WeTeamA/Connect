@@ -32,6 +32,10 @@ public class Player : MonoBehaviour
     public PlayerStats playerStats; //Functional and changable properties
     public HookTo closestHookTo; //Closest hook to at that moment
 
+    [SerializeField] ParticleSystem DeathExplosion;
+
+    [SerializeField] GameObject Connecton; //ConnectionPrefab
+    GameObject CurrentConnection; 
 
     //Testing Grabling Methods
     [SerializeField] bool Hinje = true;
@@ -89,10 +93,20 @@ public class Player : MonoBehaviour
         }
         PlayerMovement();
         StatsCollect();
-
+        //ConnectionControll();
 
     }
 
+    private void OnCollisionEnter(Collision collision)
+    {
+        if(collision.transform.tag == "hookTo")
+        {
+
+            PlayerDeath();
+            gameObject.SetActive(false);
+
+        }
+    }
 
     void StatsCollect() //Calculates all stats for player
     {
@@ -106,15 +120,10 @@ public class Player : MonoBehaviour
         playerStats.AngleToHookTo = Vector3.Angle(lookAtObj.transform.forward, transform.forward) - 90;
     }
 
-
-
-
     void PlayerMovement() //Controlls player movement
     {
         GetComponent<ConstantForce>().force = transform.forward * playerStats.StandartSpeed;
     }
-
-
 
     void FindClosestObj() //Finds id of closest hookTo
     {
@@ -141,13 +150,7 @@ public class Player : MonoBehaviour
         }
         closestHookTo = hookTo[i];
         closestHookTo.gameObject.GetComponent<MeshRenderer>().material = mat2; //Apply effects here
-
     }
-
-
-    //for detecting when to connect to hookTo object
-    float LastFrameDist;
-
 
     void HookActionHinje() //Connects to closest hookTo by hinje joint
     {
@@ -160,11 +163,6 @@ public class Player : MonoBehaviour
         {
             HookPC();
         }
-
-
-
-
-
     }
 
     void HookPC()
@@ -190,9 +188,11 @@ public class Player : MonoBehaviour
         }
     }
 
- 
 
- 
+
+    //for detecting when to connect to hookTo object
+    float LastFrameDist;
+
     void HookAndroid()
     {
         //For Android
@@ -234,12 +234,14 @@ public class Player : MonoBehaviour
         {
             Destroy(gameObject.GetComponent<HingeJoint>()); //destriys connections
         }
+        ConnectionControll(false);
     }
 
     void OnPress(bool isPressed)
     {
         if (isPressed)
         {
+            ConnectionControll(true);
             if (closestHookTo.HookToObject.DistanceToPlayer > LastFrameDist) //if player moves far away from hookTO
             {
                 if (!gameObject.GetComponent<HingeJoint>())
@@ -247,6 +249,8 @@ public class Player : MonoBehaviour
                     if (playerStats.AngleToHookTo < 10 && playerStats.AngleToHookTo > -10)
                     {
                         gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position); // when to attach
+                        gameObject.GetComponent<HingeJoint>().connectedBody = closestHookTo.GetComponent<Rigidbody>();
+                        ConnectionPlacmentCalculations();
                     }
                     else
                     {
@@ -282,7 +286,52 @@ public class Player : MonoBehaviour
 
     }
 
+    void ConnectionControll(bool create)
+    {
+        if (create) //create to do 2 metods in one
+        {
+            if (!CurrentConnection) //for not spaming. We use function OnPress to create and OnDown to change position
+            {
+                CurrentConnection = Instantiate(Connecton, Vector3.Lerp(transform.position, closestHookTo.transform.position, 0.5f), Connecton.transform.rotation, transform);
+            }
+            if (!gameObject.GetComponent<HingeJoint>()) //We need to change position and rotation only when we on connection process. When we hookedTo, Hierarcy does its job
+            {
+                ConnectionPlacmentCalculations(); 
+            }
+            else
+            {
+                CurrentConnection.transform.position = Vector3.Lerp(transform.position, GetComponent<HingeJoint>().connectedBody.transform.position, 0.5f); //places object in the middle
+            }
+        }
+        else //for destroying
+        {
+            Destroy(CurrentConnection);
+        }
+    }
 
+    void ConnectionPlacmentCalculations()
+    {
+        CurrentConnection.transform.position = Vector3.Lerp(transform.position, closestHookTo.transform.position, 0.5f); //place object in the middle
+
+        //Deals with rotation. Need to remember that method
+        Vector3 relativePos = closestHookTo.transform.position - transform.position;
+        Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
+        CurrentConnection.transform.rotation = rotation;
+        CurrentConnection.transform.up = CurrentConnection.transform.forward;
+        CurrentConnection.transform.Rotate(new Vector3(0, 90, 0));
+
+        // Difference in Distance between player/hookTO and both ends on connection object
+        float Difference = Vector3.Distance(CurrentConnection.transform.position, closestHookTo.transform.position) /
+            Vector3.Distance(CurrentConnection.transform.GetChild(0).transform.position, CurrentConnection.transform.GetChild(1).transform.position);
+        Vector3 newScale = CurrentConnection.transform.localScale;
+        newScale.y *= Difference * 2;
+        CurrentConnection.transform.localScale = newScale;
+    }
+
+    void PlayerDeath() //DeathAction
+    {
+        Instantiate(DeathExplosion, transform.position, transform.rotation).Play();
+    }
 
     void HookActionSpring() //Connects to closest hookTo by spring
     {
