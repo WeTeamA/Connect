@@ -11,7 +11,7 @@ public class Distruction : MonoBehaviour
     {
         // Corner = GameObject.FindWithTag("ScreenCorner").transform.position; //Определяем угол экрана
         Corner = Camera.main.transform.position;
-        Corner += new Vector3(-0.167f,-1f,0.4934f); //Коррекция относительно камеры (камера не может быть под углом)
+        Corner += new Vector3(-0.300f,-1f,0.65f); //Коррекция относительно камеры (камера не может быть под углом)
     }
 
 
