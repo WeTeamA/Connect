@@ -44,6 +44,8 @@ public class Player : MonoBehaviour
     //Testing Grabling Methods
     [SerializeField] bool Hinje = true;
 
+    HookTo LastConnected; //for applyings aditional force when closest hookTo changed
+
     //Test Only!!!!
     //[SerializeField] Material mat1;
     //[SerializeField] Material mat2;
@@ -55,6 +57,7 @@ public class Player : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+
         tag = "Player";
 
         if (!GetComponent<Rigidbody>()) //Adds ridibody with components
@@ -98,7 +101,7 @@ public class Player : MonoBehaviour
         PlayerMovement();
         StatsCollect();
         //ConnectionControll();
-
+        
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -111,6 +114,8 @@ public class Player : MonoBehaviour
 
         }
     }
+
+    
 
     void StatsCollect() //Calculates all stats for player
     {
@@ -256,8 +261,11 @@ public class Player : MonoBehaviour
                     {
                         gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position); // when to attach
                         gameObject.GetComponent<HingeJoint>().connectedBody = closestHookTo.GetComponent<Rigidbody>();
-
-                        gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * closestHookTo.HookToObject.acceleration); //Adds force when connected
+                        if (LastConnected != closestHookTo)
+                        {
+                            gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * closestHookTo.HookToObject.acceleration); //Adds force when connected
+                            LastConnected = closestHookTo;
+                        }
 
                         GetComponent<ConstantForce>().torque = Vector3.zero; //stops rotation force after connection
 
