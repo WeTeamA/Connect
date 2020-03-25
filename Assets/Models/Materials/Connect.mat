@@ -112,8 +112,8 @@ Material:
     - Color_20813328: {r: 2.9960785, g: 0, b: 0.047058824, a: 0}
     - Color_36F3FD2D: {r: 16, g: 5.8638744, b: 0, a: 0}
     - Color_80BE5BEB: {r: 0, g: 512, b: 0, a: 0}
-    - _AsteroidColor: {r: 0, g: 5.3403134, b: 0, a: 0}
-    - _BallColor: {r: 10.680627, g: 1.1743098, b: 0, a: 0}
+    - _AsteroidColor: {r: 0, g: 191.74902, b: 0, a: 0}
+    - _BallColor: {r: 191.74902, g: 21.082354, b: 0, a: 0}
     - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
