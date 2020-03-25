@@ -8,7 +8,7 @@ public class HookToObject
 {
     public float DistanceToPlayer;
     public GameObject player;
-    public float acceleration = 10;
+    public float acceleration = 200;
 }
 
 

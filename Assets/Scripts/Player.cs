@@ -16,6 +16,10 @@ public class PlayerStats
     public float RotationForce = 200;
     public Vector3 AngularVelocity;
     public Vector3 Velocity;
+    public float CurrentSpeed;
+    public float CurrentAngularSpeed;
+
+    //For calculations
     public float AngleX;
     public float AngleToHookTo;
 
@@ -41,8 +45,8 @@ public class Player : MonoBehaviour
     [SerializeField] bool Hinje = true;
 
     //Test Only!!!!
-    [SerializeField] Material mat1;
-    [SerializeField] Material mat2;
+    //[SerializeField] Material mat1;
+    //[SerializeField] Material mat2;
 
 
     //Created lookAt object to simulate normal vector. Have no idea, how to do that without
@@ -112,6 +116,8 @@ public class Player : MonoBehaviour
     {
         playerStats.AngularVelocity = GetComponent<Rigidbody>().angularVelocity;
         playerStats.Velocity = GetComponent<Rigidbody>().velocity;
+        playerStats.CurrentSpeed = playerStats.Velocity.magnitude;
+        playerStats.CurrentAngularSpeed = playerStats.AngularVelocity.magnitude;
         if (lookAtObj)
         {
             lookAtObj.transform.LookAt(closestHookTo.transform, Vector3.forward);
@@ -145,11 +151,11 @@ public class Player : MonoBehaviour
         {
             if (closestHookTo != hookTo[i])
             {
-                closestHookTo.gameObject.GetComponent<MeshRenderer>().material = mat1; //Disable effects here
+                //closestHookTo.gameObject.GetComponent<MeshRenderer>().material = mat1; //Disable effects here
             }
         }
         closestHookTo = hookTo[i];
-        closestHookTo.gameObject.GetComponent<MeshRenderer>().material = mat2; //Apply effects here
+        //closestHookTo.gameObject.GetComponent<MeshRenderer>().material = mat2; //Apply effects here
     }
 
     void HookActionHinje() //Connects to closest hookTo by hinje joint
@@ -250,7 +256,12 @@ public class Player : MonoBehaviour
                     {
                         gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position); // when to attach
                         gameObject.GetComponent<HingeJoint>().connectedBody = closestHookTo.GetComponent<Rigidbody>();
-                        ConnectionPlacmentCalculations();
+
+                        gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * closestHookTo.HookToObject.acceleration); //Adds force when connected
+
+                        GetComponent<ConstantForce>().torque = Vector3.zero; //stops rotation force after connection
+
+                        ConnectionPlacmentCalculations();  //Places connection line
                     }
                     else
                     {
@@ -286,7 +297,7 @@ public class Player : MonoBehaviour
 
     }
 
-    void ConnectionControll(bool create)
+    void ConnectionControll(bool create) //For connection line placment
     {
         if (create) //create to do 2 metods in one
         {
