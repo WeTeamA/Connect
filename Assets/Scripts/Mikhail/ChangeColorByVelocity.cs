@@ -8,19 +8,21 @@ public class ChangeColorByVelocity : MonoBehaviour
     public List<Color> colors = new List<Color>();
     public float velocity;
     public float intencity;
+    private float prevIntencity;
+    private List<Color> fullColorList = new List<Color>();
+
     // Start is called before the first frame update
     void Start()
     {
-        
+        prevIntencity = intencity;
+        for (int i = 0; i < colors.Count - 1; i++)
+        {
+            fullColorList.AddRange(ColorInterpolate(colors[i], colors[i + 1], 20));
+        }
     }
-    /*
-    public Color SetColor(float Velocity)
-    { 
-    
-    }
-    */
 
-    public List<Color> ColorInterpolate(Color colorOne, Color colorTwo, int iterations, float intencity)
+
+    public List<Color> ColorInterpolate(Color colorOne, Color colorTwo, int iterations)
     {
         List<Color> colorList = new List<Color>();
         //Fill the colors List
@@ -31,9 +33,11 @@ public class ChangeColorByVelocity : MonoBehaviour
 
         for (int i = 0; i < iterations; i++)
         {
-            colorList.Add(new Color((colorOne.r + (colorDiffs[0] / iterations) * i)* intencity,
-                                       (colorOne.g + (colorDiffs[1] / iterations) * i)* intencity,
-                                       (colorOne.b + (colorDiffs[2] / iterations) * i)* intencity));
+            colorList.Add(new Color(
+                                    (colorOne.r + (colorDiffs[0] / iterations) * i),
+                                    (colorOne.g + (colorDiffs[1] / iterations) * i),
+                                    (colorOne.b + (colorDiffs[2] / iterations) * i)
+                                    ));
         }
         return colorList;
     }
@@ -41,20 +45,19 @@ public class ChangeColorByVelocity : MonoBehaviour
     //Сигмоида
     public float Sigmoid(float x)
     {
-        return 2*(1 / (1 + Mathf.Exp(-x)))-1;
+        if (x < 0)
+        {
+            return 0;
+        } else
+        {
+            return 2 * (1 / (1 + Mathf.Exp(-x))) - 1;
+        }
     }
 
     //примерный диапазон vel = (0;6)
-    public Color GetColorByVelocity(float vel, List<Color> colorList, float intencity)
+    public Color GetColorByVelocity(float vel, List<Color> fullColorList)
     {
-        List<Color> fullColorList = new List<Color>();
-        for (int i = 0; i < colorList.Count - 1; i++)
-        {
-            fullColorList.AddRange(ColorInterpolate(colorList[i], colorList[i + 1], 100, intencity));
-        }
-
-        int colorsCount = fullColorList.Count;
-        int index = (int)(Sigmoid(vel) * colorsCount);
+        int index = (int)(Sigmoid(vel) * fullColorList.Count);
         Color resultColor = fullColorList[index];
         return resultColor;
     }
@@ -62,6 +65,10 @@ public class ChangeColorByVelocity : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ballMat.SetColor("_EmissionColor", GetColorByVelocity(velocity, colors, intencity));
+        List<Color> newFullColorList = new List<Color>();
+        //замена всех цветов в fullColorList при изменении intenticy от кадра к кадру
+
+        Color color = GetColorByVelocity(velocity, fullColorList);
+        ballMat.SetColor("_EmissionColor", new Color(color.r*intencity, color.g*intencity, color.b*intencity));
     }
 }

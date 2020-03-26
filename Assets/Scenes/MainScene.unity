@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.037820447, g: 0.039022498, b: 0.0513557, a: 1}
+  m_IndirectSpecularColor: {r: 0.033237323, g: 0.03493376, b: 0.04605414, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -290,14 +290,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballMat: {fileID: 2100000, guid: 1b986e6528252b24c860a6ca5e9590a6, type: 2}
   colors:
-  - {r: 0.8584906, g: 0.18751259, b: 0, a: 0}
-  - {r: 0.8867924, g: 0.69687146, b: 0, a: 0}
-  - {r: 0.990566, g: 0.990566, b: 0.990566, a: 0}
-  - {r: 0.48584908, g: 1, b: 0.9508206, a: 0}
-  - {r: 0.2971698, g: 0.5105429, b: 1, a: 0}
-  - {r: 0.061807156, g: 0, b: 1, a: 0}
+  - {r: 0.9960785, g: 0.70980394, b: 0.023529414, a: 0}
+  - {r: 0.74509805, g: 0.74509805, b: 0.74509805, a: 0}
+  - {r: 0.9921569, g: 0.24705884, b: 0, a: 0}
+  - {r: 0.2784314, g: 0.43921572, b: 1, a: 0}
+  - {r: 0, g: 1, b: 0.5568628, a: 0}
+  - {r: 0.94117653, g: 0.94117653, b: 0.94117653, a: 0}
   velocity: 0
-  intencity: 3
+  intencity: 0
 --- !u!1001 &402960568
 PrefabInstance:
   m_ObjectHideFlags: 0
