@@ -9,6 +9,10 @@ public class HookToObject
     public float DistanceToPlayer;
     public GameObject player;
     public float acceleration = 200;
+    public List<GameObject> HookToParts;
+    [ColorUsage(true, true)]
+    public Color color;
+
 }
 
 
@@ -32,6 +36,12 @@ public class HookTo : MonoBehaviour
 
         gameObject.tag = "hookTo";  //Allpy's correct tag, so player yag could find it
         HookToObject.player = GameObject.FindGameObjectWithTag("Player");
+        HookToObject.HookToParts = new List<GameObject>();
+        for (int i = 0; i < gameObject.transform.childCount;  i++)
+        {
+            HookToObject.HookToParts.Add(gameObject.transform.GetChild(i).gameObject);
+        }
+        HookToObject.color = HookToObject.HookToParts[0].GetComponent<MeshRenderer>().material.GetColor("_GlowColor");
 
     }
 

@@ -23,6 +23,9 @@ public class PlayerStats
     public float AngleX;
     public float AngleToHookTo;
 
+    public GameObject PlayerModel;
+    [ColorUsage(true, true)]
+    public Color color;
 
 
 }
@@ -60,6 +63,7 @@ public class Player : MonoBehaviour
 
         tag = "Player";
 
+        //Adding necessary components
         if (!GetComponent<Rigidbody>()) //Adds ridibody with components
         {
             Rigidbody rigidbody = gameObject.AddComponent<Rigidbody>();
@@ -75,12 +79,14 @@ public class Player : MonoBehaviour
         {
             gameObject.AddComponent<SphereCollider>();
         }
+
         //Finds all hookTo objects by tag
         hookTo = new List<HookTo>();
         foreach (GameObject gameObject in GameObject.FindGameObjectsWithTag("hookTo"))
         {
             hookTo.Add(gameObject.GetComponent<HookTo>());
         }
+
         //
         lookAtObj = Instantiate(new GameObject(), transform.position, transform.rotation, transform);
         //
@@ -312,6 +318,12 @@ public class Player : MonoBehaviour
             if (!CurrentConnection) //for not spaming. We use function OnPress to create and OnDown to change position
             {
                 CurrentConnection = Instantiate(Connecton, Vector3.Lerp(transform.position, closestHookTo.transform.position, 0.5f), Connecton.transform.rotation, transform);
+
+                //Setting Color of Connection
+                playerStats.color = playerStats.PlayerModel.GetComponent<ParticleSystemRenderer>().material.GetColor("_EmissionColor");
+                CurrentConnection.GetComponent<MeshRenderer>().material.SetColor("_BallColor", playerStats.color);
+                CurrentConnection.GetComponent<MeshRenderer>().material.SetColor("_AsteroidColor", closestHookTo.HookToObject.color);
+
             }
             if (!gameObject.GetComponent<HingeJoint>()) //We need to change position and rotation only when we on connection process. When we hookedTo, Hierarcy does its job
             {
