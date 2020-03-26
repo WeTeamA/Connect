@@ -10,6 +10,7 @@ public class HookToObject
     public GameObject player;
     public float acceleration = 200;
     public List<GameObject> HookToParts;
+    public float BreakForce;
     [ColorUsage(true, true)]
     public Color color;
 
@@ -23,15 +24,12 @@ public class HookTo : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        if (!GetComponent<Rigidbody>()) //Adds ridibody with components
+        if (!GetComponent<Rigidbody>())
         {
-            Rigidbody rigidbody = gameObject.AddComponent<Rigidbody>();
-            rigidbody.useGravity = false;
-            rigidbody.isKinematic = true;
-        }
-        if (GetComponent<Collider>())
-        {
-            gameObject.AddComponent<MeshCollider>();
+            gameObject.AddComponent<Rigidbody>();
+            gameObject.GetComponent<Rigidbody>().useGravity = false;
+            gameObject.GetComponent<Rigidbody>().isKinematic = true;
+
         }
 
         gameObject.tag = "hookTo";  //Allpy's correct tag, so player yag could find it
@@ -39,16 +37,17 @@ public class HookTo : MonoBehaviour
         HookToObject.HookToParts = new List<GameObject>();
         for (int i = 0; i < gameObject.transform.childCount;  i++)
         {
-            HookToObject.HookToParts.Add(gameObject.transform.GetChild(i).gameObject);
+            HookToObject.HookToParts.Add(gameObject.transform.GetChild(i).gameObject); // Adding all parts
+            gameObject.transform.GetChild(i).GetComponent<FixedJoint>().breakForce = HookToObject.BreakForce;
         }
         HookToObject.color = HookToObject.HookToParts[0].GetComponent<MeshRenderer>().material.GetColor("_GlowColor");
+        
 
     }
 
-    // Update is called once per frame
-    void Update()
+    private void FixedUpdate()
     {
-
         HookToObject.DistanceToPlayer = Vector3.Distance(transform.position, HookToObject.player.transform.position);
+
     }
 }

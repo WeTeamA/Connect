@@ -27,6 +27,10 @@ public class PlayerStats
     [ColorUsage(true, true)]
     public Color color;
 
+    //for test
+    public float minVelocity = 100;
+    public float maxVelocity = 0;
+
 
 }
 
@@ -93,9 +97,21 @@ public class Player : MonoBehaviour
 
     }
 
-    // Update is called once per frame
-    void Update()
+
+    float time; //For starting death after time
+    private void FixedUpdate()
     {
+
+        time += Time.deltaTime;
+        if (time > 2)
+        {
+            DeathControll();
+            if (playerStats.minVelocity > playerStats.CurrentSpeed)
+            {
+                playerStats.minVelocity = playerStats.CurrentSpeed;
+            }
+        }
+
         if (Hinje)
         {
             HookActionHinje();
@@ -107,7 +123,8 @@ public class Player : MonoBehaviour
         PlayerMovement();
         StatsCollect();
         //ConnectionControll();
-        
+
+
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -115,8 +132,6 @@ public class Player : MonoBehaviour
         if(collision.transform.tag == "hookTo")
         {
 
-            PlayerDeath();
-            gameObject.SetActive(false);
 
         }
     }
@@ -135,6 +150,9 @@ public class Player : MonoBehaviour
         }
         playerStats.AngleX = (Vector3.SignedAngle(transform.forward, lookAtObj.transform.forward, Vector3.right));
         playerStats.AngleToHookTo = Vector3.Angle(lookAtObj.transform.forward, transform.forward) - 90;
+        playerStats.color = playerStats.PlayerModel.GetComponent<ParticleSystemRenderer>().material.GetColor("_EmissionColor");
+
+
     }
 
     void PlayerMovement() //Controlls player movement
@@ -320,7 +338,6 @@ public class Player : MonoBehaviour
                 CurrentConnection = Instantiate(Connecton, Vector3.Lerp(transform.position, closestHookTo.transform.position, 0.5f), Connecton.transform.rotation, transform);
 
                 //Setting Color of Connection
-                playerStats.color = playerStats.PlayerModel.GetComponent<ParticleSystemRenderer>().material.GetColor("_EmissionColor");
                 CurrentConnection.GetComponent<MeshRenderer>().material.SetColor("_BallColor", playerStats.color);
                 CurrentConnection.GetComponent<MeshRenderer>().material.SetColor("_AsteroidColor", closestHookTo.HookToObject.color);
 
@@ -359,9 +376,15 @@ public class Player : MonoBehaviour
         CurrentConnection.transform.localScale = newScale;
     }
 
-    void PlayerDeath() //DeathAction
+    void DeathControll() //DeathAction
     {
-        Instantiate(DeathExplosion, transform.position, transform.rotation).Play();
+        if (playerStats.CurrentSpeed < 0.4f)
+        {
+            Instantiate(DeathExplosion, transform.position, transform.rotation).Play();
+            gameObject.SetActive(false);
+        }
+
+
     }
 
     void HookActionSpring() //Connects to closest hookTo by spring
