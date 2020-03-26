@@ -136,6 +136,7 @@ GameObject:
   - component: {fileID: 335292097}
   - component: {fileID: 335292098}
   - component: {fileID: 335292099}
+  - component: {fileID: 335292100}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -275,6 +276,28 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bd99b846b9a48664d88c01bc2a010f86, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &335292100
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 335292092}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 599a1c20d4be87842bd4482cd34d0d46, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ballMat: {fileID: 2100000, guid: 1b986e6528252b24c860a6ca5e9590a6, type: 2}
+  colors:
+  - {r: 0.9960785, g: 0.70980394, b: 0.023529414, a: 0}
+  - {r: 0.74509805, g: 0.74509805, b: 0.74509805, a: 0}
+  - {r: 0.9921569, g: 0.24705884, b: 0, a: 0}
+  - {r: 0.2784314, g: 0.43921572, b: 1, a: 0}
+  - {r: 0, g: 1, b: 0.5568628, a: 0}
+  - {r: 0.94117653, g: 0.94117653, b: 0.94117653, a: 0}
+  velocity: 0
+  intencity: 0
 --- !u!1001 &402960568
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -422,6 +445,16 @@ PrefabInstance:
       propertyPath: simulationSpeed
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 6204013873017384718, guid: b17f286e36389614fa0850f62fbc8e74,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1b986e6528252b24c860a6ca5e9590a6, type: 2}
+    - target: {fileID: 6204013873017384718, guid: b17f286e36389614fa0850f62fbc8e74,
+        type: 3}
+      propertyPath: m_Materials.Array.data[1]
+      value: 
+      objectReference: {fileID: 2100000, guid: 1b986e6528252b24c860a6ca5e9590a6, type: 2}
     - target: {fileID: 6204013873017384719, guid: b17f286e36389614fa0850f62fbc8e74,
         type: 3}
       propertyPath: m_Name
