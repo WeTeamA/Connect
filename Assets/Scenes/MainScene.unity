@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.04162754, g: 0.04282415, b: 0.056454662, a: 1}
+  m_IndirectSpecularColor: {r: 0.04196293, g: 0.043187715, b: 0.056950867, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -202,7 +202,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 335292092}
   m_LocalRotation: {x: 0.000000005122274, y: -0.7071068, z: 0.000000016763806, w: 0.70710677}
-  m_LocalPosition: {x: -0.693, y: 25.522, z: -6.07}
+  m_LocalPosition: {x: -1.28, y: 25.32, z: -6.749}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -869,7 +869,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1657844821}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -2, y: 25.5, z: -6.08}
+  m_LocalPosition: {x: -2, y: 25.32, z: -6.749}
   m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children:
   - {fileID: 1891407118}
@@ -892,7 +892,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   isAndroidControll: 0
   playerStats:
-    StandartSpeed: 1
+    StandartSpeed: 5
     MoveAccelerateMultiply: 50
     RotationForce: 10000
     AngularVelocity: {x: 0, y: 0, z: 0}
@@ -8457,7 +8457,7 @@ FixedJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 8481082248537002014}
   m_ConnectedBody: {fileID: 0}
-  m_BreakForce: Infinity
+  m_BreakForce: 3
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -8501,7 +8501,7 @@ FixedJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4872936257132193741}
   m_ConnectedBody: {fileID: 0}
-  m_BreakForce: Infinity
+  m_BreakForce: 3
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -8545,7 +8545,7 @@ FixedJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2547225749419580157}
   m_ConnectedBody: {fileID: 0}
-  m_BreakForce: Infinity
+  m_BreakForce: 3
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -8589,7 +8589,7 @@ FixedJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4188872437164459927}
   m_ConnectedBody: {fileID: 0}
-  m_BreakForce: Infinity
+  m_BreakForce: 3
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -8633,7 +8633,7 @@ FixedJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6729300289930664770}
   m_ConnectedBody: {fileID: 0}
-  m_BreakForce: Infinity
+  m_BreakForce: 3
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -8677,7 +8677,7 @@ FixedJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6829101010123686984}
   m_ConnectedBody: {fileID: 0}
-  m_BreakForce: Infinity
+  m_BreakForce: 3
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
@@ -8721,7 +8721,7 @@ FixedJoint:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2216308800574942722}
   m_ConnectedBody: {fileID: 0}
-  m_BreakForce: Infinity
+  m_BreakForce: 3
   m_BreakTorque: Infinity
   m_EnableCollision: 0
   m_EnablePreprocessing: 1
