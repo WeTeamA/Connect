@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.041627303, g: 0.04282406, b: 0.05645486, a: 1}
+  m_IndirectSpecularColor: {r: 0.04160571, g: 0.04279583, b: 0.05641323, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -684,6 +684,125 @@ MonoBehaviour:
     DistanceToPlayer: 0
     player: {fileID: 0}
     acceleration: 200
+--- !u!1001 &1224379421
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1657844827}
+    m_Modifications:
+    - target: {fileID: -6259280969146992283, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0e87dc6a1b3980d468b980e5579ca0c9, type: 2}
+    - target: {fileID: -5931091473410721585, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0e87dc6a1b3980d468b980e5579ca0c9, type: 2}
+    - target: {fileID: -4856196736279092797, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0e87dc6a1b3980d468b980e5579ca0c9, type: 2}
+    - target: {fileID: -4246750626029532106, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0e87dc6a1b3980d468b980e5579ca0c9, type: 2}
+    - target: {fileID: -4216859302048453862, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0.0045776367
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -0.055268
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 180
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 5.0589714
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 5.0589714
+      objectReference: {fileID: 0}
+    - target: {fileID: -4216859302048453862, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_LocalScale.z
+      value: 5.0589714
+      objectReference: {fileID: 0}
+    - target: {fileID: -3082999597663738376, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0e87dc6a1b3980d468b980e5579ca0c9, type: 2}
+    - target: {fileID: -927199367670048503, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_Name
+      value: BallWithParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 553778859403920462, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0e87dc6a1b3980d468b980e5579ca0c9, type: 2}
+    - target: {fileID: 8436875199471784828, guid: b2d0f838978dcc14db435ef655d18c4f,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 0e87dc6a1b3980d468b980e5579ca0c9, type: 2}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: b2d0f838978dcc14db435ef655d18c4f, type: 3}
 --- !u!114 &1357276261
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1029,6 +1148,7 @@ Transform:
   - {fileID: 1381968299}
   - {fileID: 1742220836}
   - {fileID: 1891407118}
+  - {fileID: 1809530481}
   m_Father: {fileID: 0}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1108,6 +1228,12 @@ Transform:
   m_Father: {fileID: 1657844827}
   m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: -91.231995, y: -20.131989, z: 10.143997}
+--- !u!4 &1809530481 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: -4216859302048453862, guid: b2d0f838978dcc14db435ef655d18c4f,
+    type: 3}
+  m_PrefabInstance: {fileID: 1224379421}
+  m_PrefabAsset: {fileID: 0}
 --- !u!114 &1825724965
 MonoBehaviour:
   m_ObjectHideFlags: 0
