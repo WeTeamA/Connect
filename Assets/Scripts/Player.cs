@@ -31,6 +31,12 @@ public class PlayerStats
     public float minVelocity = 100;
     public float maxVelocity = 0;
 
+    //Slow motion
+    public float SlowDownFactor;
+    public float SlowDownLength;
+
+
+
 
 }
 
@@ -48,8 +54,7 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject Connecton; //ConnectionPrefab
     GameObject CurrentConnection; 
 
-    //Testing Grabling Methods
-    [SerializeField] bool Hinje = true;
+
 
     HookTo LastConnected; //for applyings aditional force when closest hookTo changed
 
@@ -102,41 +107,32 @@ public class Player : MonoBehaviour
     private void FixedUpdate()
     {
 
+        PlayerMovement();
+
+        HookActionHinje();
+        //PlayerMovement();
+        StatsCollect();
+        SlowMotionControll(); //For normalasing time after slow motion effect
+
+        //Death
         time += Time.deltaTime;
         if (time > 2)
         {
-            DeathControll();
             if (playerStats.minVelocity > playerStats.CurrentSpeed)
             {
                 playerStats.minVelocity = playerStats.CurrentSpeed;
             }
         }
-
-        if (Hinje)
-        {
-            HookActionHinje();
-        }
-        else
-        {
-            HookActionSpring();
-        }
-        PlayerMovement();
-        StatsCollect();
-        //ConnectionControll();
-
-
+        //
     }
 
-    private void OnCollisionEnter(Collision collision)
+    private void OnCollisionStay(Collision collision)
     {
-        if(collision.transform.tag == "hookTo")
+        if(collision.transform.tag == "AstroParts")
         {
-
-
+            DeathControll();
         }
     }
-
-    
 
     void StatsCollect() //Calculates all stats for player
     {
@@ -270,6 +266,8 @@ public class Player : MonoBehaviour
             Destroy(gameObject.GetComponent<HingeJoint>()); //destriys connections
         }
         ConnectionControll(false);
+        gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * closestHookTo.HookToObject.OnConnectionForce); //Adds force when connected
+
     }
 
     void OnPress(bool isPressed)
@@ -283,15 +281,17 @@ public class Player : MonoBehaviour
                 {
                     if (playerStats.AngleToHookTo < 10 && playerStats.AngleToHookTo > -10)
                     {
-                        gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position); // when to attach
-                        gameObject.GetComponent<HingeJoint>().connectedBody = closestHookTo.GetComponent<Rigidbody>();
                         if (LastConnected != closestHookTo)
                         {
-                            gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * closestHookTo.HookToObject.acceleration); //Adds force when connected
+                            //gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * closestHookTo.HookToObject.OnConnectionForce); //Adds force when connected
                             LastConnected = closestHookTo;
                         }
+                        gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position); // when to attach
+                        gameObject.GetComponent<HingeJoint>().connectedBody = closestHookTo.GetComponent<Rigidbody>();
 
-                        GetComponent<ConstantForce>().torque = Vector3.zero; //stops rotation force after connection
+                        SlowMotionControll(true); // StartSlowMotion
+
+                        //GetComponent<ConstantForce>().torque = Vector3.zero; //stops rotation force after connection
 
                         ConnectionPlacmentCalculations();  //Places connection line
                     }
@@ -316,6 +316,7 @@ public class Player : MonoBehaviour
             {
                 GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration; // Add force when attached
             }
+
 
             if (GetComponent<HingeJoint>())
             {
@@ -383,42 +384,25 @@ public class Player : MonoBehaviour
             Instantiate(DeathExplosion, transform.position, transform.rotation).Play();
             gameObject.SetActive(false);
         }
-
-
     }
 
-    void HookActionSpring() //Connects to closest hookTo by spring
+    void SlowMotionControll(bool StartSlowMo = false)
     {
-        if (Input.GetKeyUp("space"))
-        {
-            if (gameObject.GetComponent<SpringJoint>())
-            {
-                Destroy(gameObject.GetComponent<SpringJoint>());
-            }
-        }
-        if (Input.GetKeyDown("space"))
-        {
-            LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer;
-        }
-        if (Input.GetKey("space"))
-        {
-            if (closestHookTo.HookToObject.DistanceToPlayer > LastFrameDist)
-            {
-                if (!gameObject.GetComponent<SpringJoint>())
-                {
-                    SpringJoint springJoint = gameObject.AddComponent<SpringJoint>();
-                    springJoint.anchor = transform.InverseTransformPoint(closestHookTo.transform.position);
-                    springJoint.maxDistance = 1;
-                    springJoint.spring = 100;
-                    springJoint.damper = 300;
-                }
-            }
-            LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer;
 
-            if (gameObject.GetComponent<SpringJoint>())
-            {
-                GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration;
-            }
+        if (StartSlowMo)
+        {
+            Time.timeScale = playerStats.SlowDownFactor;
         }
+        else
+        {
+            Time.timeScale += (1f / playerStats.SlowDownLength) * Time.unscaledDeltaTime;
+            Time.timeScale = Mathf.Clamp(Time.timeScale, 0, 1);
+            Time.fixedDeltaTime = 0.01f * Time.timeScale;
+        }
+        print("scale " +Time.timeScale);
+        print("fixed " + Time.fixedDeltaTime);
+
     }
+
+
 }
