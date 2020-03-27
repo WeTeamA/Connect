@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.04194752, g: 0.043169633, b: 0.056924853, a: 1}
+  m_IndirectSpecularColor: {r: 0.040431876, g: 0.041542906, b: 0.054709844, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -822,7 +822,7 @@ MonoBehaviour:
   HookToObject:
     DistanceToPlayer: 0
     player: {fileID: 0}
-    acceleration: 1
+    acceleration: 5
     OnConnectionForce: 200
     HookToParts: []
     BreakForce: 5
@@ -2412,7 +2412,7 @@ MonoBehaviour:
   HookToObject:
     DistanceToPlayer: 0
     player: {fileID: 0}
-    acceleration: 1
+    acceleration: 5
     OnConnectionForce: 200
     HookToParts: []
     BreakForce: 5
@@ -2432,7 +2432,7 @@ MonoBehaviour:
   HookToObject:
     DistanceToPlayer: 0
     player: {fileID: 0}
-    acceleration: 1
+    acceleration: 5
     OnConnectionForce: 200
     HookToParts: []
     BreakForce: 5
@@ -9979,7 +9979,7 @@ MonoBehaviour:
   HookToObject:
     DistanceToPlayer: 0
     player: {fileID: 0}
-    acceleration: 1
+    acceleration: 5
     OnConnectionForce: 200
     HookToParts: []
     BreakForce: 5
