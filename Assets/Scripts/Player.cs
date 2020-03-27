@@ -103,6 +103,8 @@ public class Player : MonoBehaviour
     }
 
 
+
+
     float time; //For starting death after time
     private void FixedUpdate()
     {
