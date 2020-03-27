@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.040431876, g: 0.041542906, b: 0.054709844, a: 1}
+  m_IndirectSpecularColor: {r: 0.04251607, g: 0.04379566, b: 0.057775103, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -2684,8 +2684,8 @@ MonoBehaviour:
     color: {r: 0, g: 0, b: 0, a: 0}
     minVelocity: 100
     maxVelocity: 0
-    SlowDownFactor: 1
-    SlowDownLength: 1
+    SlowDownFactor: 0.3
+    SlowDownLength: 2
   closestHookTo: {fileID: 0}
   DeathExplosion: {fileID: 816886994110319137, guid: 145201443f643cb45931707be9331a4a,
     type: 3}
