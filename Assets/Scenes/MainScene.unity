@@ -386,7 +386,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 335292092}
   m_LocalRotation: {x: 0.000000005122274, y: -0.7071068, z: 0.000000016763806, w: 0.70710677}
-  m_LocalPosition: {x: 4.18, y: 26, z: -9.45}
+  m_LocalPosition: {x: 1.71, y: 26, z: -9.54}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
@@ -473,13 +473,10 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   ballMat: {fileID: 2100000, guid: 1b986e6528252b24c860a6ca5e9590a6, type: 2}
   colors:
-  - {r: 0.9960785, g: 0.70980394, b: 0.023529414, a: 0}
-  - {r: 0.74509805, g: 0.74509805, b: 0.74509805, a: 0}
-  - {r: 0.9921569, g: 0.24705884, b: 0, a: 0}
-  - {r: 0.2784314, g: 0.43921572, b: 1, a: 0}
-  - {r: 0, g: 1, b: 0.5568628, a: 0}
-  - {r: 0.94117653, g: 0.94117653, b: 0.94117653, a: 0}
-  velocity: 0
+  - {r: 0.85490197, g: 0.29411766, b: 0.22745098, a: 0}
+  - {r: 0.9098039, g: 0.8509804, b: 0.7647059, a: 0}
+  - {r: 0.38039216, g: 0.54509807, b: 0.8666667, a: 0}
+  velocity: 0.1
   intencity: 0
 --- !u!1 &399368523 stripped
 GameObject:
@@ -2075,6 +2072,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Target(Lvl1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 6355597953853102445, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6387318159921487391, guid: 2f30143263f2abb48a37aabc33b54433,
         type: 3}
@@ -4236,6 +4238,21 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 3103329383510148622, guid: 5c236aad78bc47240aa5aef6328645c0,
+        type: 3}
+      propertyPath: isAndroidControll
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6354808561050249030, guid: 5c236aad78bc47240aa5aef6328645c0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 9009495167714487781, guid: 5c236aad78bc47240aa5aef6328645c0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 5c236aad78bc47240aa5aef6328645c0, type: 3}

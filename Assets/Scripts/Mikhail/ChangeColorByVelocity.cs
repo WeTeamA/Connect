@@ -47,17 +47,16 @@ public class ChangeColorByVelocity : MonoBehaviour
     {
         if (x < 0)
         {
-            return 0;
+            return 1 / (1 + Mathf.Exp(-x));
         } else
         {
-            return 2 * (1 / (1 + Mathf.Exp(-x))) - 1;
+            return 1 / (1 + Mathf.Exp(-x));
         }
     }
 
     //примерный диапазон vel = (0;6)
-    public Color GetColorByVelocity(float vel, List<Color> fullColorList)
-    {
-        int index = (int)(Sigmoid(vel) * fullColorList.Count);
+    public Color GetColorByVelocity(float vel, List<Color> fullColorList)    {
+        int index = (int)((2*Sigmoid(vel)-1) * fullColorList.Count);
         Color resultColor = fullColorList[index];
         return resultColor;
     }
@@ -67,6 +66,9 @@ public class ChangeColorByVelocity : MonoBehaviour
     {
         List<Color> newFullColorList = new List<Color>();
         //замена всех цветов в fullColorList при изменении intenticy от кадра к кадру
+        velocity = GameObject.Find("Player").GetComponent<Player>().playerStats.CurrentSpeed*0.6f;
+        intencity = 1+Sigmoid(velocity-2) * 10;
+        //intencity =1+ velocity * velocity*0.625f;
 
         Color color = GetColorByVelocity(velocity, fullColorList);
         ballMat.SetColor("_EmissionColor", new Color(color.r*intencity, color.g*intencity, color.b*intencity));
