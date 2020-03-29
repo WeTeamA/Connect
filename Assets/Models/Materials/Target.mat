@@ -82,7 +82,7 @@ Material:
     - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GlowColor: {r: 24.094118, g: 2.509804, b: 2.509804, a: 1}
+    - _GlowColor: {r: 24.094116, g: 1.3876193, b: 5.0458884, a: 1}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
 --- !u!114 &1681189682659390308
 MonoBehaviour:
