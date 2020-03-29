@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Target
+  m_Name: Heart
   m_Shader: {fileID: -6465566751694194690, guid: 4f5cfd0173816ca43b7ae194c51ca7d7,
     type: 3}
   m_ShaderKeywords: 
@@ -53,7 +53,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
-    - Transparent: 0.27
+    - Transparent: 0
     - _AlphaClip: 0
     - _Blend: 0
     - _BumpScale: 1
@@ -82,8 +82,7 @@ Material:
     - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GlowColor: {r: 24.094116, g: 1.3876193, b: 5.0458884, a: 1}
-    - _InnerColor: {r: 0, g: 0, b: 0, a: 0}
+    - _GlowColor: {r: 23.968628, g: 9.662745, b: 1.254902, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
 --- !u!114 &1681189682659390308
 MonoBehaviour:

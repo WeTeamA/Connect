@@ -53,6 +53,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     m_Floats:
+    - Transparent: 0
     - Vector1_15337047: 6
     - Vector1_875C0674: 0.01
     - _AlphaClip: 0
@@ -75,6 +76,7 @@ Material:
     - _SpecularHighlights: 1
     - _SrcBlend: 1
     - _Surface: 0
+    - _Transparent: 0
     - _WorkflowMode: 1
     - _ZWrite: 1
     m_Colors:
@@ -84,7 +86,8 @@ Material:
     - _BaseColor: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _Color: {r: 0.5, g: 0.5, b: 0.5, a: 1}
     - _EmissionColor: {r: 0, g: 0, b: 0, a: 1}
-    - _GlowColor: {r: 3.3882353, g: 23.968628, b: 0, a: 0}
+    - _GlowColor: {r: 6.901961, g: 10.290196, b: 11.984314, a: 1}
+    - _InnerColor: {r: 0, g: 0, b: 0, a: 0}
     - _SpecColor: {r: 0.19999996, g: 0.19999996, b: 0.19999996, a: 1}
 --- !u!114 &6885160214513338580
 MonoBehaviour:
