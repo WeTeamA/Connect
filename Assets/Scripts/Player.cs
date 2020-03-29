@@ -45,6 +45,8 @@ public class PlayerStats
     public float TargetDamper = 0.2f;
     public float damperModifier;
 
+    public float NewAngle;
+
 
 
 
@@ -78,6 +80,8 @@ public class Player : MonoBehaviour
     //Created lookAt object to simulate normal vector. Have no idea, how to do that without
     GameObject lookAtObj;
 
+    GameObject RotatedLookAt;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -110,6 +114,12 @@ public class Player : MonoBehaviour
 
         //
         lookAtObj = Instantiate(new GameObject(), transform.position, transform.rotation, transform);
+        //
+
+        //
+        RotatedLookAt = Instantiate(new GameObject(), transform.position, transform.rotation);
+        RotatedLookAt.AddComponent<SimpleCameraFollow>();
+
         //
 
     }
@@ -158,9 +168,27 @@ public class Player : MonoBehaviour
         {
             lookAtObj.transform.LookAt(closestHookTo.transform, Vector3.forward);
         }
+        if (RotatedLookAt)
+        {
+            if (GetComponent<Joint>())
+            {
+                RotatedLookAt.transform.LookAt(GetComponent<Joint>().connectedBody.transform);
+            }
+            else
+            {
+                RotatedLookAt.transform.LookAt(closestHookTo.transform);
+            }
+            RotatedLookAt.transform.up = RotatedLookAt.transform.forward;
+        }
+
         playerStats.AngleX = (Vector3.SignedAngle(transform.forward, lookAtObj.transform.forward, Vector3.right));
-        playerStats.AngleToHookTo = Vector3.Angle(lookAtObj.transform.forward, transform.forward) - 90;
         playerStats.color = playerStats.PlayerModel.GetComponent<ParticleSystemRenderer>().material.GetColor("_EmissionColor");
+
+
+        Vector3 relativePos = closestHookTo.transform.position - transform.position;
+        Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
+        playerStats.AngleToHookTo = Vector3.Angle(RotatedLookAt.transform.forward, transform.forward);
+        playerStats.AngleToHookTo = playerStats.AngleToHookTo > 90 ? 180 - playerStats.AngleToHookTo : playerStats.AngleToHookTo;
 
 
     }
@@ -421,6 +449,8 @@ public class Player : MonoBehaviour
 
     }
 
+
+    float TimeOnRightPos;
     void OnPressSpring(bool isPressed)
     {
         if (isPressed)
@@ -437,15 +467,17 @@ public class Player : MonoBehaviour
                             //gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * closestHookTo.HookToObject.RealibitationForce); //Adds force when connected
                             LastConnected = closestHookTo;
                         }
+
                         gameObject.AddComponent<SpringJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position); // when to attach
                         gameObject.GetComponent<SpringJoint>().spring = playerStats.StartSpring;
                         gameObject.GetComponent<SpringJoint>().damper = playerStats.StartDamper;
-
                         gameObject.GetComponent<SpringJoint>().connectedBody = closestHookTo.GetComponent<Rigidbody>();
+
+
 
                         SlowMotionControll(true); // StartSlowMotion
 
-                        //GetComponent<ConstantForce>().torque = Vector3.zero; //stops rotation force after connection
+                        GetComponent<ConstantForce>().torque = Vector3.zero; //stops rotation force after connection
 
                         ConnectionPlacmentCalculations();  //Places connection line
                     }
@@ -458,15 +490,19 @@ public class Player : MonoBehaviour
                         }
                         else
                         {
-
                             GetComponent<ConstantForce>().torque = new Vector3(-playerStats.RotationForce, 0, 0); // против часовой
-
                             //GetComponent<ConstantForce>().force += lookAtObj.transform.forward * playerStats.MoveAccelerateMultiply;
                         }
                     }
                 }
             }
             LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer; //for attach calculations
+
+            if (GetComponent<Joint>())
+            {
+                GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration; // Add force when attached
+
+            }
 
             if (GetComponent<SpringJoint>())
             {
@@ -475,12 +511,22 @@ public class Player : MonoBehaviour
                 {
                     GetComponent<SpringJoint>().spring *= playerStats.springModifier;
                 }
-                if (GetComponent<SpringJoint>().damper < playerStats.TargetDamper)
+                if (playerStats.AngleToHookTo < 30)
                 {
-                    GetComponent<SpringJoint>().damper *= playerStats.damperModifier;
+                    TimeOnRightPos += Time.deltaTime;
                 }
-                GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration; // Add force when attached
-
+                else
+                {
+                    TimeOnRightPos = 0;
+                }
+                if(TimeOnRightPos > 1 && playerStats.AngleToHookTo < 15)
+                {
+                    TimeOnRightPos = 0;
+                    gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(GetComponent<SpringJoint>().connectedBody.transform.position); // when to attach
+                    gameObject.GetComponent<HingeJoint>().connectedBody = GetComponent<SpringJoint>().connectedBody.GetComponent<Rigidbody>();
+                    Destroy(GetComponent<SpringJoint>());
+                }
+                
             }
         }
         else
@@ -498,21 +544,23 @@ public class Player : MonoBehaviour
         {
             if (!CurrentConnection) //for not spaming. We use function OnPress to create and OnDown to change position
             {
-                CurrentConnection = Instantiate(Connecton, Vector3.Lerp(transform.position, closestHookTo.transform.position, 0.5f), Connecton.transform.rotation, transform);
+                CurrentConnection = Instantiate(Connecton, Vector3.Lerp(transform.position, closestHookTo.transform.position, 0.5f), Connecton.transform.rotation);
+                CurrentConnection.AddComponent<SimpleCameraFollow>();
 
                 //Setting Color of Connection
                 CurrentConnection.GetComponent<MeshRenderer>().material.SetColor("_BallColor", playerStats.color);
                 CurrentConnection.GetComponent<MeshRenderer>().material.SetColor("_AsteroidColor", closestHookTo.HookToObject.color);
 
             }
-            if (!gameObject.GetComponent<Joint>()) //We need to change position and rotation only when we on connection process. When we hookedTo, Hierarcy does its job
+            /*if (!gameObject.GetComponent<Joint>()) //We need to change position and rotation only when we on connection process. When we hookedTo, Hierarcy does its job
             {
                 ConnectionPlacmentCalculations();
             }
             else
             {
                 CurrentConnection.transform.position = Vector3.Lerp(transform.position, GetComponent<Joint>().connectedBody.transform.position, 0.5f); //places object in the middle
-            }
+            }*/
+            ConnectionPlacmentCalculations();
         }
         else //for destroying
         {
@@ -533,17 +581,35 @@ public class Player : MonoBehaviour
 
     void ConnectionPlacmentCalculations()
     {
-        CurrentConnection.transform.position = Vector3.Lerp(transform.position, closestHookTo.transform.position, 0.5f); //place object in the middle
+
+        Vector3 vector3;
+        if (!gameObject.GetComponent<Joint>())
+        {
+            vector3 = closestHookTo.transform.position;
+            //CurrentConnection.transform.position = Vector3.Lerp(transform.position, closestHookTo.transform.position, 0.5f); //place object in the middle
+        }
+        else
+
+        {
+            vector3 = GetComponent<Joint>().connectedBody.transform.position;
+            //CurrentConnection.transform.position = Vector3.Lerp(transform.position, GetComponent<Joint>().connectedBody.transform.position, 0.5f);
+        }
+
+        CurrentConnection.transform.position = Vector3.Lerp(transform.position, vector3, 0.5f); //place object in the middle
 
         //Deals with rotation. Need to remember that method
-        Vector3 relativePos = closestHookTo.transform.position - transform.position;
+
+        Vector3 relativePos = vector3 - transform.position;
         Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
         CurrentConnection.transform.rotation = rotation;
         CurrentConnection.transform.up = CurrentConnection.transform.forward;
         CurrentConnection.transform.Rotate(new Vector3(0, 90, 0));
 
+        
+
+
         // Difference in Distance between player/hookTO and both ends on connection object
-        float Difference = Vector3.Distance(CurrentConnection.transform.position, closestHookTo.transform.position) /
+        float Difference = Vector3.Distance(CurrentConnection.transform.position, vector3) /
             Vector3.Distance(CurrentConnection.transform.GetChild(0).transform.position, CurrentConnection.transform.GetChild(1).transform.position);
         Vector3 newScale = CurrentConnection.transform.localScale;
         newScale.y *= Difference * 2;
