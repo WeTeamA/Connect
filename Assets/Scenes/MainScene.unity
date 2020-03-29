@@ -4477,7 +4477,7 @@ PrefabInstance:
     - target: {fileID: 3103329383510148622, guid: 5c236aad78bc47240aa5aef6328645c0,
         type: 3}
       propertyPath: playerStats.TargetSpring
-      value: 50
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 3103329383510148622, guid: 5c236aad78bc47240aa5aef6328645c0,
         type: 3}
@@ -4497,7 +4497,7 @@ PrefabInstance:
     - target: {fileID: 3103329383510148622, guid: 5c236aad78bc47240aa5aef6328645c0,
         type: 3}
       propertyPath: playerStats.StartSpring
-      value: 30
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 3103329383510148622, guid: 5c236aad78bc47240aa5aef6328645c0,
         type: 3}

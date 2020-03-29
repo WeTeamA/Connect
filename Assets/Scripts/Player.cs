@@ -291,8 +291,7 @@ public class Player : MonoBehaviour
 
 
 
-    //for detecting when to connect to hookTo object
-    float LastFrameDist;
+
 
     void HookAndroid()
     {
@@ -326,6 +325,7 @@ public class Player : MonoBehaviour
     void OnDownHinje()
     {
         LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer; //for attach calculations
+
     }
 
     void OnUpHinje()
@@ -361,7 +361,7 @@ public class Player : MonoBehaviour
 
                         SlowMotionControll(true); // StartSlowMotion
 
-                        //GetComponent<ConstantForce>().torque = Vector3.zero; //stops rotation force after connection
+                        GetComponent<ConstantForce>().torque = Vector3.zero; //stops rotation force after connection
 
                         ConnectionPlacmentCalculations();  //Places connection line
                     }
@@ -430,11 +430,14 @@ public class Player : MonoBehaviour
 
 
 
-
+    //for detecting when to connect to hookTo object
+    float LastFrameDist;
+    //for detecting when to connect to hookTo object with hinje
+    float PreLastFrameDist;
 
     void OnDownSpring()
     {
-        LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer; //for attach calculations
+        LastFrameDist = 0; //for attach calculations
     }
 
     void OnUpSpring()
@@ -445,7 +448,10 @@ public class Player : MonoBehaviour
             Destroy(gameObject.GetComponent<Joint>()); //destriys connections
         }
         ConnectionControllSpring(false);
-        gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * closestHookTo.HookToObject.OnConnectionForce); //Adds force when connected
+        if (LastConnected != closestHookTo)
+        {
+            gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * closestHookTo.HookToObject.OnConnectionForce); //Adds force when connected
+        }
 
     }
 
@@ -456,22 +462,30 @@ public class Player : MonoBehaviour
         if (isPressed)
         {
             ConnectionControllSpring(true);
-            if (closestHookTo.HookToObject.DistanceToPlayer > LastFrameDist) //if player moves far away from hookTO
+            if (closestHookTo.HookToObject.DistanceToPlayer > LastFrameDist && LastFrameDist != 0) //if player moves far away from hookTO
             {
                 if (!gameObject.GetComponent<Joint>())
                 {
-                    if (playerStats.AngleToHookTo < 10 && playerStats.AngleToHookTo > -10)
+                    if (playerStats.AngleToHookTo < 11)
                     {
                         if (LastConnected != closestHookTo)
                         {
-                            //gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * closestHookTo.HookToObject.RealibitationForce); //Adds force when connected
                             LastConnected = closestHookTo;
                         }
+                        if (LastFrameDist < PreLastFrameDist)
+                        {
+                            gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position); // when to attach
+                            gameObject.GetComponent<HingeJoint>().connectedBody = closestHookTo.GetComponent<Rigidbody>();
+                        }
+                        else
+                        {
+                            gameObject.AddComponent<SpringJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position); // when to attach
+                            gameObject.GetComponent<SpringJoint>().spring = playerStats.StartSpring;
+                            gameObject.GetComponent<SpringJoint>().damper = playerStats.StartDamper;
+                            gameObject.GetComponent<SpringJoint>().connectedBody = closestHookTo.GetComponent<Rigidbody>();
+                        }
 
-                        gameObject.AddComponent<SpringJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position); // when to attach
-                        gameObject.GetComponent<SpringJoint>().spring = playerStats.StartSpring;
-                        gameObject.GetComponent<SpringJoint>().damper = playerStats.StartDamper;
-                        gameObject.GetComponent<SpringJoint>().connectedBody = closestHookTo.GetComponent<Rigidbody>();
+
 
 
 
@@ -486,16 +500,15 @@ public class Player : MonoBehaviour
                         if (playerStats.AngleX > 0)
                         {
                             GetComponent<ConstantForce>().torque = new Vector3(playerStats.RotationForce, 0, 0); // по часовой
-                            //GetComponent<ConstantForce>().force += lookAtObj.transform.forward * playerStats.MoveAccelerateMultiply;
                         }
                         else
                         {
                             GetComponent<ConstantForce>().torque = new Vector3(-playerStats.RotationForce, 0, 0); // против часовой
-                            //GetComponent<ConstantForce>().force += lookAtObj.transform.forward * playerStats.MoveAccelerateMultiply;
                         }
                     }
                 }
             }
+            PreLastFrameDist = LastFrameDist;
             LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer; //for attach calculations
 
             if (GetComponent<Joint>())
@@ -511,7 +524,7 @@ public class Player : MonoBehaviour
                 {
                     GetComponent<SpringJoint>().spring *= playerStats.springModifier;
                 }
-                if (playerStats.AngleToHookTo < 30)
+                if (playerStats.AngleToHookTo < 25)
                 {
                     TimeOnRightPos += Time.deltaTime;
                 }
@@ -519,7 +532,7 @@ public class Player : MonoBehaviour
                 {
                     TimeOnRightPos = 0;
                 }
-                if(TimeOnRightPos > 1 && playerStats.AngleToHookTo < 15)
+                if(TimeOnRightPos > 1 && playerStats.AngleToHookTo < 11)
                 {
                     TimeOnRightPos = 0;
                     gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(GetComponent<SpringJoint>().connectedBody.transform.position); // when to attach
@@ -614,6 +627,12 @@ public class Player : MonoBehaviour
         Vector3 newScale = CurrentConnection.transform.localScale;
         newScale.y *= Difference * 2;
         CurrentConnection.transform.localScale = newScale;
+
+        if (GetComponent<HingeJoint>() && CurrentConnection.GetComponent<SimpleCameraFollow>())
+        {
+            CurrentConnection.transform.parent = transform;
+            Destroy(Connecton.GetComponent<SimpleCameraFollow>());
+        }
     }
 
     void DeathControll() //DeathAction
