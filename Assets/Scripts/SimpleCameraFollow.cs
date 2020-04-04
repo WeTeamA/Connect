@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class SimpleCameraFollow : MonoBehaviour
 {
+    public bool showDirection;
+    
     GameObject player;
     GameObject target;
 
@@ -47,7 +49,7 @@ public class SimpleCameraFollow : MonoBehaviour
         // Код для указания направления до цели
         planes = GeometryUtility.CalculateFrustumPlanes(Camera.main); //Заполняем массив плоскостей камеры
 
-        if (!GeometryUtility.TestPlanesAABB(planes,target.GetComponent<SphereCollider>().bounds) && GeometryUtility.TestPlanesAABB(planes, player.GetComponent<SphereCollider>().bounds)) //Если цель не находится в зоне видимости (ОПИРАЕМСЯ НА КОЛЛАЙДЕР ЦЕЛИ)
+        if (!GeometryUtility.TestPlanesAABB(planes,target.GetComponent<SphereCollider>().bounds) && GeometryUtility.TestPlanesAABB(planes, player.GetComponent<SphereCollider>().bounds) && showDirection) //Если цель не находится в зоне видимости (ОПИРАЕМСЯ НА КОЛЛАЙДЕР ЦЕЛИ)
         { 
             directionSphere.SetActive(true);
 

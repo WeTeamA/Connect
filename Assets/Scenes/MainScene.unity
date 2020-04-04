@@ -539,6 +539,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3484623e6479cc74db5bbd8586501459, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  showDirection: 1
   directionSpherePrefab: {fileID: 4083693629100779366, guid: 908a7f806665ee743b9919ebaa981238,
     type: 3}
   setDecayInteisityDistance: 6
