@@ -43,15 +43,9 @@ public class ChangeColorByVelocity : MonoBehaviour
     }
 
     //Сигмоида
-    public float Sigmoid(float x)
+    public static float Sigmoid(float x)
     {
-        if (x < 0)
-        {
             return 1 / (1 + Mathf.Exp(-x));
-        } else
-        {
-            return 1 / (1 + Mathf.Exp(-x));
-        }
     }
 
     //примерный диапазон vel = (0;6)

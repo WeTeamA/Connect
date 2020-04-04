@@ -7,6 +7,7 @@ TagManager:
   - hookTo
   - ScreenCorner
   - AstroParts
+  - Target
   layers:
   - Default
   - TransparentFX
