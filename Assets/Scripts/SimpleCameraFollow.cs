@@ -67,7 +67,7 @@ public class SimpleCameraFollow : MonoBehaviour
             directionSphere.transform.localScale = new Vector3(Camera.main.transform.position.x / 7, Camera.main.transform.position.x / 7, Camera.main.transform.position.x / 7) *0.05f; // Деление на 7 - это подобранный параметр, т.к. все настраивалось относительно положения камеры от плоскости YZ на расстоянии 7, а умножение на 0,05 - это возврат к базовому размеру шарика, тоже подобранный параметр
             // Строчка выше также нужна, чтобы размер directionSphere менялся в зависимости от удаления камеры
 
-            directionSphereMaterial.SetColor("_GlowColor", saveBaseHDRColor * ChangeColorByVelocity.Sigmoid((direction.magnitude- setDecayInteisityDistance) *10)); //Изменение свечения материала сферы направления по измененной сигмоиде. Функция сигмоиды определена в самописном скрипте
+            directionSphereMaterial.SetColor("_GlowColor", target.GetComponent<MeshRenderer>().materials[0].GetColor("_GlowColor")* 6 * ChangeColorByVelocity.Sigmoid((direction.magnitude- setDecayInteisityDistance) *10)); //Изменение свечения материала сферы направления по измененной сигмоиде. Функция сигмоиды определена в самописном скрипте. Умножение на 6 нужно для того, чтобы компенсировать слабое сияние цвета материала цели
             
             distancceMin = 10000000; //Устанавливаем немозможное большое значение, чтобы со следующего кадра все было ок
         }
