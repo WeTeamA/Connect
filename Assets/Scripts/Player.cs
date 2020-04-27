@@ -57,7 +57,7 @@ public class PlayerStats
 public class Player : MonoBehaviour
 {
 
-    List<HookTo> hookTo; //Contains all hook to objects
+    [HideInInspector] public List<HookTo> hookTo; //Contains all hook to objects
     [SerializeField]
     bool isAndroidControll;
     public PlayerStats playerStats; //Functional and changable properties
@@ -69,12 +69,7 @@ public class Player : MonoBehaviour
     GameObject CurrentConnection; 
 
 
-
     [SerializeField] HookTo LastConnected; //for applyings aditional force when closest hookTo changed
-
-    //Test Only!!!!
-    [SerializeField] bool Hinje;
-
 
 
     //Created lookAt object to simulate normal vector. Have no idea, how to do that without

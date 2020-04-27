@@ -35,7 +35,6 @@ public class HookTo : MonoBehaviour
             gameObject.AddComponent<Rigidbody>();
             gameObject.GetComponent<Rigidbody>().useGravity = false;
             gameObject.GetComponent<Rigidbody>().isKinematic = true;
-
         }
 
         SelecctedParticle = GameObject.FindGameObjectWithTag("SelectParticle");
@@ -56,11 +55,29 @@ public class HookTo : MonoBehaviour
 
     }
 
+    void Desctruction()
+    {
+        foreach (GameObject part in HookToObject.HookToParts)
+        {
+            if (!part.GetComponent<Joint>()) //if one of parts breaks
+            {
+                foreach (GameObject brokenPart in HookToObject.HookToParts)
+                {
+                    if (brokenPart.GetComponent<Joint>())
+                    {
+                        HookToObject.player.GetComponent<Player>().hookTo.Remove(this);
+                        Destroy(brokenPart.GetComponent<Joint>());
+                    }
+                }
+            }
+        }
+    }
+
     public void TakeParticle()
     {
         if (HookToObject.IsClosest)
         {
-            SelecctedParticle.transform.position = Vector3.MoveTowards(SelecctedParticle.transform.position, transform.position, Time.deltaTime * 50);
+            SelecctedParticle.transform.position = Vector3.MoveTowards(SelecctedParticle.transform.position, transform.position, Time.deltaTime * 100);
         }
     }
 
@@ -68,5 +85,6 @@ public class HookTo : MonoBehaviour
     {
         HookToObject.DistanceToPlayer = Vector3.Distance(transform.position, HookToObject.player.transform.position);
         TakeParticle();
+        Desctruction();
     }
 }
