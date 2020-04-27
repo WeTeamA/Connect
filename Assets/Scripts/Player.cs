@@ -412,7 +412,7 @@ public class Player : MonoBehaviour
 
     void ConnectionControllSpring(bool create) //For connection line placment
     {
-        if (create) //create to do 2 metods in one
+        if (create) //create to do 2 metods in one (creates and keeps connection)
         {
             if (!CurrentConnection) //for not spaming. We use function OnPress to create and OnDown to change position
             {
