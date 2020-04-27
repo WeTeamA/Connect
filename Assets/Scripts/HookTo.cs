@@ -65,10 +65,19 @@ public class HookTo : MonoBehaviour
                 {
                     if (brokenPart.GetComponent<Joint>())
                     {
-                        HookToObject.player.GetComponent<Player>().hookTo.Remove(this);
+
                         Destroy(brokenPart.GetComponent<Joint>());
                     }
                 }
+                HookToObject.player.GetComponent<Player>().hookTo.Remove(this);
+                if (HookToObject.player.GetComponent<Joint>())
+                {
+                    if (HookToObject.player.GetComponent<Joint>().connectedBody == GetComponent<Rigidbody>())
+                    {
+                        //Destroy(HookToObject.player.GetComponent<Joint>());
+                    }
+                }
+
             }
         }
     }
