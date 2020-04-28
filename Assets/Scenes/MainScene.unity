@@ -914,7 +914,7 @@ MonoBehaviour:
     DistanceToPlayer: 0
     player: {fileID: 0}
     acceleration: 3
-    OnConnectionForce: 125
+    OnConnectionForce: 200
     RealibitationForce: 100
     HookToParts: []
     BreakForce: 5
@@ -937,7 +937,7 @@ MonoBehaviour:
     DistanceToPlayer: 0
     player: {fileID: 0}
     acceleration: 3
-    OnConnectionForce: 125
+    OnConnectionForce: 200
     RealibitationForce: 100
     HookToParts: []
     BreakForce: 5
@@ -960,7 +960,7 @@ MonoBehaviour:
     DistanceToPlayer: 0
     player: {fileID: 0}
     acceleration: 3
-    OnConnectionForce: 125
+    OnConnectionForce: 200
     RealibitationForce: 100
     HookToParts: []
     BreakForce: 5
@@ -2421,12 +2421,12 @@ PrefabInstance:
     - target: {fileID: 3103329383510148617, guid: 5c236aad78bc47240aa5aef6328645c0,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 31.92
+      value: 31.68
       objectReference: {fileID: 0}
     - target: {fileID: 3103329383510148617, guid: 5c236aad78bc47240aa5aef6328645c0,
         type: 3}
       propertyPath: m_LocalPosition.z
-      value: -5.14
+      value: -6.73
       objectReference: {fileID: 0}
     - target: {fileID: 3103329383510148617, guid: 5c236aad78bc47240aa5aef6328645c0,
         type: 3}
@@ -3721,7 +3721,7 @@ MonoBehaviour:
     DistanceToPlayer: 0
     player: {fileID: 0}
     acceleration: 3
-    OnConnectionForce: 125
+    OnConnectionForce: 200
     RealibitationForce: 100
     HookToParts: []
     BreakForce: 5
@@ -5040,6 +5040,51 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 9044040494333071131, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494333071132, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494333071132, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494337312201, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494337312201, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494337312244, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494667104137, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494667104137, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494667104180, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
     - target: {fileID: 9044040494699504635, guid: 2f30143263f2abb48a37aabc33b54433,
         type: 3}
       propertyPath: m_LocalPosition.x
@@ -5099,6 +5144,516 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Target(Lvl1)
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494729156112, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494729156117, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494729156117, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494767064966, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494767064987, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494767064987, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494808786915, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494808786916, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494808786916, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494930253032, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494930253032, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494930253079, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494943674544, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494943674549, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040494943674549, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495023096585, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495023096586, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495023096586, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495036590065, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495036590066, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495036590066, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495085422869, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495085422870, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495085422870, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495112757113, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495112757114, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495112757114, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495126107843, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495126107844, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495126107844, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495142360625, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495142360625, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495142360636, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495159371531, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495159371532, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495159371532, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495222477677, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495222477678, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495222477678, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495243060775, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495243060792, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495243060792, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495289059571, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495289059571, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495289059582, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495323327608, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495323327613, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495323327613, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495345019842, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495345019847, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495345019847, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495409543355, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495409543356, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495409543356, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495443647597, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495443647598, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495443647598, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495457975760, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495457975765, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495457975765, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495523727665, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495523727665, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495523727676, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495630993763, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495630993764, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495630993764, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495660270163, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495660270163, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495660270174, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495680800065, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495680800066, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495680800066, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495692091187, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495692091188, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495692091188, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495804224035, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495804224036, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495804224036, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495875996800, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495875996800, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495875996815, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495916329989, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495916329990, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495916329990, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495988704971, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495988704971, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040495988705014, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040496153947809, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040496153947809, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040496153947820, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040496161917709, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040496161917710, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040496161917710, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040496184729542, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040496184729563, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040496184729563, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040496238406506, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040496238406511, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040496238406511, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040496263245267, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_BreakForce
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040496263245268, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_TagString
+      value: AstroParts
+      objectReference: {fileID: 0}
+    - target: {fileID: 9044040496263245268, guid: 2f30143263f2abb48a37aabc33b54433,
+        type: 3}
+      propertyPath: m_Layer
+      value: 9
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 2f30143263f2abb48a37aabc33b54433, type: 3}

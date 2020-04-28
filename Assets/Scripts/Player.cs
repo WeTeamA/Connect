@@ -373,10 +373,11 @@ public class Player : MonoBehaviour
 
             if (GetComponent<Joint>())
             {
-                GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration; // Add force when attached
                 FindClosestObj(); //Searches when already attached
 
             }
+            GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration; // Add force when attached
+
 
             if (GetComponent<SpringJoint>())
             {
@@ -489,8 +490,8 @@ public class Player : MonoBehaviour
     {
         if (playerStats.CurrentSpeed < 0.4f)
         {
-            //Instantiate(DeathExplosion, transform.position, transform.rotation).Play();
-            //gameObject.SetActive(false);
+            Instantiate(DeathExplosion, transform.position, transform.rotation).Play();
+            gameObject.SetActive(false);
         }
     }
 
