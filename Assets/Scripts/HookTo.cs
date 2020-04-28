@@ -74,7 +74,9 @@ public class HookTo : MonoBehaviour
                 {
                     if (HookToObject.player.GetComponent<Joint>().connectedBody == GetComponent<Rigidbody>())
                     {
-                        //Destroy(HookToObject.player.GetComponent<Joint>());
+                        Destroy(HookToObject.player.GetComponent<Joint>());
+                        HookToObject.player.GetComponent<Player>().StopReadingInput = true;
+                        HookToObject.player.GetComponent<Player>().ConnectionControllSpring(false);
                     }
                 }
 

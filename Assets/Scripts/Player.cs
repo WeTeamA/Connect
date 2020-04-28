@@ -77,6 +77,8 @@ public class Player : MonoBehaviour
 
     GameObject RotatedLookAt;
 
+    [SerializeField] public bool StopReadingInput; //For situation, when we destroyed asteroid, and need to destroy connections and tricing for a moment. Sets true by destroued HootTo
+
     // Start is called before the first frame update
     void Start()
     {
@@ -116,7 +118,7 @@ public class Player : MonoBehaviour
         RotatedLookAt.AddComponent<ObjectFollow>();
 
         //
-
+        StopReadingInput = false;
     }
 
 
@@ -239,25 +241,24 @@ public class Player : MonoBehaviour
         if (Input.GetKeyDown("space"))
         {
             OnDownSpring();
-
         }
 
         if (Input.GetKeyUp("space"))
         {
             OnUpSpring();
-
         }
-
-        if (Input.GetKey("space"))
+        if (!StopReadingInput) //we stop reading, if we destoyed asteroid we were connected to
         {
-            OnPressSpring(true);
-
+            if (Input.GetKey("space"))
+            {
+                OnPressSpring(true);
+            }
+            else
+            {
+                OnPressSpring(false);
+            }
         }
-        else
-        {
-            OnPressSpring(false);
 
-        }
     }
 
 
@@ -313,11 +314,12 @@ public class Player : MonoBehaviour
             Destroy(gameObject.GetComponent<Joint>()); //destriys connections
         }
         ConnectionControllSpring(false);
-        if (LastConnected != closestHookTo)
+        if (LastConnected != closestHookTo && !StopReadingInput) //Add force, if we didnt attached to that asteroid before
         {
             gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * closestHookTo.HookToObject.OnConnectionForce); //Adds force when connected
             LastConnected = closestHookTo;
         }
+        StopReadingInput = false; //After releasing button or touch we can continue tracing
     }
 
 
@@ -410,7 +412,7 @@ public class Player : MonoBehaviour
 
 
 
-    void ConnectionControllSpring(bool create) //For connection line placment
+    public void ConnectionControllSpring(bool create) //For connection line placment
     {
         if (create) //create to do 2 metods in one (creates and keeps connection)
         {
@@ -487,8 +489,8 @@ public class Player : MonoBehaviour
     {
         if (playerStats.CurrentSpeed < 0.4f)
         {
-            Instantiate(DeathExplosion, transform.position, transform.rotation).Play();
-            gameObject.SetActive(false);
+            //Instantiate(DeathExplosion, transform.position, transform.rotation).Play();
+            //gameObject.SetActive(false);
         }
     }
 
