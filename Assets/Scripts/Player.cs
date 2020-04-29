@@ -316,7 +316,7 @@ public class Player : MonoBehaviour
         ConnectionControllSpring(false);
         if (LastConnected != closestHookTo && !StopReadingInput) //Add force, if we didnt attached to that asteroid before
         {
-            gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * closestHookTo.HookToObject.OnConnectionForce); //Adds force when connected
+            gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * closestHookTo.HookToObject.AfterConnectionForce); //Adds force when connected
             LastConnected = closestHookTo;
         }
         StopReadingInput = false; //After releasing button or touch we can continue tracing

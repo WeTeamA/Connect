@@ -9,7 +9,7 @@ public class HookToObject
     public float DistanceToPlayer;
     public GameObject player;
     public float acceleration = 10;
-    public float OnConnectionForce = 200;
+    public float AfterConnectionForce = 200;
     public float RealibitationForce = 200;
     public List<GameObject> HookToParts;
     public float BreakForce;
