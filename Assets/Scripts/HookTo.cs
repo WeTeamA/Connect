@@ -6,13 +6,21 @@ using UnityEngine;
 [System.Serializable]
 public class HookToObject
 {
-    public float DistanceToPlayer;
-    public GameObject player;
+    [HideInInspector] public float DistanceToPlayer;
+    [HideInInspector] public GameObject player;
+
+    [Header("Constant player speed multiplier (when attached). Write")]
     public float acceleration = 10;
+
+    [Header("Force, that we apply after connection ended. Write")]
     public float AfterConnectionForce = 200;
-    public float RealibitationForce = 200;
-    public List<GameObject> HookToParts;
+    //public float RealibitationForce = 200;
+    [HideInInspector] public List<GameObject> HookToParts;
+
+    [Header("Force, that we need to apply to break asteroid part. Write")]
     public float BreakForce;
+
+    [Header("Asteroid color (for connection). ReadOnly")]
     [ColorUsage(true, true)]
     public Color color;
     [HideInInspector] public bool IsClosest = false; //For understanding, if this asteroid is the closest and it must take selected particle
@@ -24,7 +32,8 @@ public class HookTo : MonoBehaviour
 
     public HookToObject HookToObject;
 
-    [SerializeField] GameObject SelecctedParticle; //shows, that it is the closest
+
+    GameObject SelecctedParticle; //shows, that it is the closest
 
     
     // Start is called before the first frame update

@@ -5,47 +5,55 @@ using UnityEngine;
 [System.Serializable]
 public class PlayerStats
 {
+    [Header("Constant player speed (In force). Write")]
     public float StandartSpeed = 1;
-    /// <summary>
-    /// Acceleration when rotates to orbit
-    /// </summary>
-    public float MoveAccelerateMultiply = 5;
-    /// <summary>
-    /// Rotation Speed
-    /// </summary>
+    [Header("Force, that rotates player to orbit position, when he fly away. Write")]
     public float RotationForce = 200;
-    public Vector3 AngularVelocity;
-    public Vector3 Velocity;
+    [HideInInspector] public Vector3 AngularVelocity;
+    [HideInInspector] public Vector3 Velocity;
+    [Header("Speed of rotation. ReadOnly")]
     public float CurrentSpeed;
+    [Header("Force, that rotates player to orbit position, when he fly away. ReadOnly")]
     public float CurrentAngularSpeed;
 
     //For calculations
-    public float AngleX;
-    public float AngleToHookTo;
+    [HideInInspector] public float AngleX;
+    [HideInInspector] public float AngleToHookTo;
 
+    [Header("Player MeshRenderer. Write")]
     public GameObject PlayerModel;
+    [Header("Shows color of player (For connection). ReadOnly")]
     [ColorUsage(true, true)]
     public Color color;
 
     //for test
+    [Header("Shows minimum velocity in this game. Good for setting death velocity. ReadOnly")]
     public float minVelocity = 100;
-    public float maxVelocity = 0;
+    //public float maxVelocity = 0;
 
     //Slow motion
+    [Header("Strength of slow mo. (x > 1) - faster, (x < 1) - slower. Write")]
     public float SlowDownFactor;
+    [Header("How long slowMo will last. Write")]
     public float SlowDownLength;
 
 
-    //Spring
+    [Header("Spring strength in start of connection. Write")]
     public float StartSpring = 10;
+    [Header("Spring strength that we want. Write")]
     public float TargetSpring = 10;
+    [Header("Spring strength multiplier. As more, than faster we will reach targer spring force. Write")]
     public float springModifier;
 
+
+    [Header("Spring damper (makes spring smoother) in start of connection. Write")]
     public float StartDamper = 0.2f;
+    [Header("Spring damper (makes spring smoother) that we want. Write")]
     public float TargetDamper = 0.2f;
+    [Header("Spring damper (makes spring smoother) multiplier. As more, than faster we will reach targer damper. Write")]
     public float damperModifier;
 
-    public float NewAngle;
+    //public float NewAngle;
 
 
 
@@ -58,18 +66,22 @@ public class Player : MonoBehaviour
 {
 
     [HideInInspector] public List<HookTo> hookTo; //Contains all hook to objects
+    [Header("True - android input, False - PC input. Write")]
     [SerializeField]
     bool isAndroidControll;
     public PlayerStats playerStats; //Functional and changable properties
+    [Header("Show closest asteroid. ReadOnly")]
     public HookTo closestHookTo; //Closest hook to at that moment
 
+    [Header("Death particle. Write")]
     [SerializeField] ParticleSystem DeathExplosion;
 
+    [Header("Connection Object. Write")]
     [SerializeField] GameObject Connecton; //ConnectionPrefab
     GameObject CurrentConnection; 
 
 
-    [SerializeField] HookTo LastConnected; //for applyings aditional force when closest hookTo changed
+    HookTo LastConnected; //for applyings aditional force when closest hookTo changed
 
 
     //Created lookAt object to simulate normal vector. Have no idea, how to do that without
@@ -77,7 +89,7 @@ public class Player : MonoBehaviour
 
     GameObject RotatedLookAt;
 
-    [SerializeField] public bool StopReadingInput; //For situation, when we destroyed asteroid, and need to destroy connections and tricing for a moment. Sets true by destroued HootTo
+    [HideInInspector] public bool StopReadingInput; //For situation, when we destroyed asteroid, and need to destroy connections and tricing for a moment. Sets true by destroued HootTo
 
     // Start is called before the first frame update
     void Start()
