@@ -45,7 +45,7 @@ public class SimpleCameraFollow : MonoBehaviour
 
 
         //Вот здесь будет написана зависимость высоты камеры от скорости снаряда player
-        TempPos = 50 * ChangeColorByVelocity.Sigmoid(player.GetComponent<Player>().playerStats.CurrentSpeed - 5) + 7; //тут вместо 50 должно быть 13,чтобы адекватно ограничить отлетание камеры. Число 50 влияет на дальность отлета
+        TempPos = 15 * ChangeColorByVelocity.Sigmoid(player.GetComponent<Player>().playerStats.CurrentSpeed - 5) + 7; //тут вместо 50 должно быть 13,чтобы адекватно ограничить отлетание камеры. Число 50 влияет на дальность отлета
         GameObject.Find("SmoothUpAndDown").transform.position = new Vector3(TempPos, GameObject.Find("SmoothUpAndDown").transform.position.y, GameObject.Find("SmoothUpAndDown").transform.position.z);
         transform.position = new Vector3(Mathf.Lerp(transform.position.x, GameObject.Find("SmoothUpAndDown").transform.position.x, 0.01f), transform.position.y, transform.position.z);
 

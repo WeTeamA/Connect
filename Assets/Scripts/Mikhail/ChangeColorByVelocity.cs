@@ -61,7 +61,7 @@ public class ChangeColorByVelocity : MonoBehaviour
         List<Color> newFullColorList = new List<Color>();
         //замена всех цветов в fullColorList при изменении intenticy от кадра к кадру
         velocity = GameObject.Find("Player").GetComponent<Player>().playerStats.CurrentSpeed*0.6f;
-        intencity = 20+Sigmoid(1.35f*velocity-5) * 10;
+        intencity = 10+Sigmoid(1.35f*velocity-5) * 10;
         //intencity =1+ velocity * velocity*0.625f;
 
         Color color = GetColorByVelocity(velocity, fullColorList);
