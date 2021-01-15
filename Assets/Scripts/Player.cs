@@ -61,9 +61,15 @@ public class PlayerStats
 
 
 }
-
+[RequireComponent(typeof(Rigidbody))]
 public class Player : MonoBehaviour
 {
+    public float repelForce;
+    public float attractForce;
+    public float attractDistance;
+
+    Rigidbody rigidbody;
+    bool StartSlowMo;
 
     [HideInInspector] public List<HookTo> hookTo; //Contains all hook to objects
     [Header("True - android input, False - PC input. Write")]
@@ -72,6 +78,7 @@ public class Player : MonoBehaviour
     public PlayerStats playerStats; //Functional and changable properties
     [Header("Show closest asteroid. ReadOnly")]
     public HookTo closestHookTo; //Closest hook to at that moment
+    [HideInInspector] public HookTo ConnectedAsteroid;
 
     [Header("Death particle. Write")]
     [SerializeField] ParticleSystem DeathExplosion;
@@ -91,20 +98,20 @@ public class Player : MonoBehaviour
 
     [HideInInspector] public bool StopReadingInput; //For situation, when we destroyed asteroid, and need to destroy connections and tricing for a moment. Sets true by destroued HootTo
 
+    bool Connecting;
+
     // Start is called before the first frame update
     void Start()
     {
-
+        Connecting = false;
         tag = "Player";
 
-        //Adding necessary components
-        if (!GetComponent<Rigidbody>()) //Adds ridibody with components
-        {
-            Rigidbody rigidbody = gameObject.AddComponent<Rigidbody>();
-            rigidbody.useGravity = false;
-            rigidbody.angularDrag = 49;
-            rigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
-        }
+        rigidbody = GetComponent<Rigidbody>();
+        //Setting necessary components
+        rigidbody.useGravity = false;
+        rigidbody.angularDrag = 49;
+        rigidbody.constraints = RigidbodyConstraints.FreezePositionX | RigidbodyConstraints.FreezeRotationY | RigidbodyConstraints.FreezeRotationZ;
+
         if (!GetComponent<ConstantForce>()) //Adds ConstantForce
         {
             gameObject.AddComponent<ConstantForce>();
@@ -143,9 +150,8 @@ public class Player : MonoBehaviour
         PlayerMovement();
 
         HookAction();
-        //PlayerMovement();
         StatsCollect();
-        SlowMotionControll(); //For normalasing time after slow motion effect
+        SlowMotionControll(); //For normalizing time after slow motion effect
 
         //Death
         time += Time.deltaTime;
@@ -167,21 +173,33 @@ public class Player : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.transform.tag == "BrokenPart")
+        {
+            Destroy(other.gameObject);
+            rigidbody.mass += 0.1f;
+            playerStats.StandartSpeed += 0.25f;
+            transform.localScale += new Vector3(0.01f, 0.01f, 0.01f);
+            playerStats.PlayerModel.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
+        }
+    }
+
     void StatsCollect() //Calculates all stats for player
     {
-        playerStats.AngularVelocity = GetComponent<Rigidbody>().angularVelocity;
-        playerStats.Velocity = GetComponent<Rigidbody>().velocity;
+        playerStats.AngularVelocity = rigidbody.angularVelocity;
+        playerStats.Velocity = rigidbody.velocity;
         playerStats.CurrentSpeed = playerStats.Velocity.magnitude;
         playerStats.CurrentAngularSpeed = playerStats.AngularVelocity.magnitude;
-        if (lookAtObj)
+        if (lookAtObj && ConnectedAsteroid)
         {
-            lookAtObj.transform.LookAt(closestHookTo.transform, Vector3.forward);
+            lookAtObj.transform.LookAt(ConnectedAsteroid.transform, Vector3.forward);
         }
         if (RotatedLookAt)
         {
-            if (GetComponent<Joint>())
+            if (Connecting)
             {
-                RotatedLookAt.transform.LookAt(GetComponent<Joint>().connectedBody.transform);
+                RotatedLookAt.transform.LookAt(ConnectedAsteroid.transform);
             }
             else
             {
@@ -209,29 +227,35 @@ public class Player : MonoBehaviour
 
     void FindClosestObj() //Finds id of closest hookTo
     {
-        float minDist = hookTo[0].HookToObject.DistanceToPlayer;
-        ChangeClosestObj(0);
+        float minDist = 10000000;
+
+        //if (closestHookTo)
+        //    minDist = closestHookTo.HookToObject.DistanceToPlayer;
+
+        int index = 0;
+
         for (int i = 0; i < hookTo.Count; i++)
         {
             if (hookTo[i].HookToObject.DistanceToPlayer < minDist)
             {
                 minDist = hookTo[i].HookToObject.DistanceToPlayer;
-                ChangeClosestObj(i);
+                index = i;
             }
         }
+        CheckAndChangeClosestObj(index);
     }
 
-    void ChangeClosestObj(int i)// Sets Closest and allows to apply effects on it
+    void CheckAndChangeClosestObj(int i)// Sets Closest and allows to apply effects on it
     {
         if (closestHookTo)
         {
             if (closestHookTo != hookTo[i])
             {
-                closestHookTo.gameObject.GetComponent<HookTo>().HookToObject.IsClosest = false; //Disable effects here
+                closestHookTo.HookToObject.IsClosest = false; //Disable effects here
             }
         }
         closestHookTo = hookTo[i];
-        closestHookTo.gameObject.GetComponent<HookTo>().HookToObject.IsClosest = true; //Apply effects here
+        closestHookTo.HookToObject.IsClosest = true; //Apply effects here
     }
 
     void HookAction() //Connects to closest hookTo by hinje joint
@@ -252,56 +276,70 @@ public class Player : MonoBehaviour
         //For PC
         if (Input.GetKeyDown("space"))
         {
-            OnDownSpring();
+            StartConnection();
+            print("Down");
         }
 
         if (Input.GetKeyUp("space"))
         {
-            OnUpSpring();
+            EndConnection();
+            print("Up");
+
         }
-        if (!StopReadingInput) //we stop reading, if we destoyed asteroid we were connected to
+
+        if (Input.GetKeyDown(KeyCode.LeftShift))
         {
-            if (Input.GetKey("space"))
-            {
-                OnPressSpring(true);
-            }
-            else
-            {
-                OnPressSpring(false);
-            }
+            StartSlowMo = true;
         }
 
+        if (Input.GetKeyUp(KeyCode.LeftShift))
+        {
+            StartSlowMo = false;
+
+        }
+        ConnectionCalc();
     }
-
-
-
-
 
     void HookAndroid()
     {
         //For Android
 
+
         foreach (Touch touch in Input.touches)
         {
-            if (Input.touches.Length == 1)
+            if (Input.touches.Length >= 1)
             {
                 if (touch.phase == TouchPhase.Began) //Started Touch
                 {
-                    OnDownSpring();
+                    StartConnection();
                 }
                 if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled) //Stopped Touch
                 {
-                    OnUpSpring();
+                    EndConnection();
                 }
                 if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) //OnTouch
                 {
-                    OnPressSpring(true);
+                    //SpringCalc(true);
+                }
+            }
+            if (Input.touches.Length >= 2)
+            {
+                if (touch.phase == TouchPhase.Began) //Started Touch
+                {
+                }
+                if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled) //Stopped Touch
+                {
+                    EndConnection();
+                }
+                if (touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) //OnTouch
+                {
+                    //SpringCalc(true);
                 }
             }
         }
         if (Input.touches.Length == 0)
         {
-            OnPressSpring(false); //Searches when already attached
+            //SpringCalc(false); //Searches when already attached
         }
     }
 
@@ -311,142 +349,92 @@ public class Player : MonoBehaviour
     //for detecting when to connect to hookTo object
     float LastFrameDist;
     //for detecting when to connect to hookTo object with hinje
-    float PreLastFrameDist;
 
-    void OnDownSpring()
+    void StartConnection()
     {
         LastFrameDist = 0; //for attach calculations
+        Connecting = true;
+        ConnectedAsteroid = closestHookTo;
     }
 
-    void OnUpSpring()
+    public void EndConnection()
     {
         GetComponent<ConstantForce>().torque = Vector3.zero; //stops rotating
-        if (gameObject.GetComponent<Joint>())
+
+        ConnectionControll(false);
+
+        if (LastConnected != ConnectedAsteroid && !StopReadingInput) //Add force, if we didnt attached to that asteroid before
         {
-            Destroy(gameObject.GetComponent<Joint>()); //destriys connections
+            rigidbody.AddForce(transform.forward * ConnectedAsteroid.HookToObject.AfterConnectionForce); //Adds force when connected
+            LastConnected = ConnectedAsteroid;
         }
-        ConnectionControllSpring(false);
-        if (LastConnected != closestHookTo && !StopReadingInput) //Add force, if we didnt attached to that asteroid before
-        {
-            gameObject.GetComponent<Rigidbody>().AddForce(transform.forward * closestHookTo.HookToObject.AfterConnectionForce); //Adds force when connected
-            LastConnected = closestHookTo;
-        }
-        StopReadingInput = false; //After releasing button or touch we can continue tracing
+
+        StopReadingInput = false; //After releasing button or touch we can continue tracking
+        Connecting = false;
     }
 
 
-    float TimeOnRightPos;
-    void OnPressSpring(bool isPressed)
+    void ConnectionCalc()
     {
-        if (isPressed)
+        if (Connecting)
         {
-            ConnectionControllSpring(true);
-            if (closestHookTo.HookToObject.DistanceToPlayer > LastFrameDist && LastFrameDist != 0) //if player moves far away from hookTO
+            ConnectionControll(true);
+            if (ConnectedAsteroid.HookToObject.DistanceToPlayer > LastFrameDist && LastFrameDist != 0) //if player moves far away from hookTO
             {
-                if (!gameObject.GetComponent<Joint>())
+
+                CalcForce();
+
+                if (playerStats.AngleX > 0)
                 {
-                    if (playerStats.AngleToHookTo < 11)
-                    {
-
-                        if (LastFrameDist < PreLastFrameDist)
-                        {
-                            gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position); // when to attach
-                            gameObject.GetComponent<HingeJoint>().connectedBody = closestHookTo.GetComponent<Rigidbody>();
-                        }
-                        else
-                        {
-                            gameObject.AddComponent<SpringJoint>().anchor = transform.InverseTransformPoint(closestHookTo.transform.position); // when to attach
-                            gameObject.GetComponent<SpringJoint>().spring = playerStats.StartSpring;
-                            gameObject.GetComponent<SpringJoint>().damper = playerStats.StartDamper;
-                            gameObject.GetComponent<SpringJoint>().connectedBody = closestHookTo.GetComponent<Rigidbody>();
-                        }
-
-                        SlowMotionControll(true); // StartSlowMotion
-
-                        GetComponent<ConstantForce>().torque = Vector3.zero; //stops rotation force after connection
-
-                        ConnectionPlacmentCalculations();  //Places connection line
-                    }
-                    else
-                    {
-                        if (playerStats.AngleX > 0)
-                        {
-                            GetComponent<ConstantForce>().torque = new Vector3(playerStats.RotationForce, 0, 0); // по часовой
-                        }
-                        else
-                        {
-                            GetComponent<ConstantForce>().torque = new Vector3(-playerStats.RotationForce, 0, 0); // против часовой
-                        }
-                    }
-                }
-            }
-            PreLastFrameDist = LastFrameDist;
-            LastFrameDist = closestHookTo.HookToObject.DistanceToPlayer; //for attach calculations
-
-            if (GetComponent<Joint>())
-            {
-                FindClosestObj(); //Searches when already attached
-
-            }
-            GetComponent<ConstantForce>().force *= closestHookTo.HookToObject.acceleration; // Add force when attached
-
-
-            if (GetComponent<SpringJoint>())
-            {
-                //FindClosestObj(); //Searches when already attached
-                if(GetComponent<SpringJoint>().spring < playerStats.TargetSpring)
-                {
-                    GetComponent<SpringJoint>().spring *= playerStats.springModifier;
-                }
-                if (playerStats.AngleToHookTo < 25)
-                {
-                    TimeOnRightPos += Time.deltaTime;
+                    transform.Rotate(new Vector3(playerStats.RotationForce * playerStats.AngleToHookTo, 0, 0)); // по часовой
                 }
                 else
                 {
-                    TimeOnRightPos = 0;
+                    transform.Rotate(new Vector3(-playerStats.RotationForce * playerStats.AngleToHookTo, 0, 0)); // против часовой
                 }
-                if(TimeOnRightPos > 1 && playerStats.AngleToHookTo < 11)
-                {
-                    TimeOnRightPos = 0;
-                    gameObject.AddComponent<HingeJoint>().anchor = transform.InverseTransformPoint(GetComponent<SpringJoint>().connectedBody.transform.position); // when to attach
-                    gameObject.GetComponent<HingeJoint>().connectedBody = GetComponent<SpringJoint>().connectedBody.GetComponent<Rigidbody>();
-                    Destroy(GetComponent<SpringJoint>());
-                }
-                
             }
-        }
-        else
-        {
-            FindClosestObj(); //Searches when not attached
-        }
+            else
+                attractDistance = ConnectedAsteroid.HookToObject.DistanceToPlayer / 2;
+
+            LastFrameDist = ConnectedAsteroid.HookToObject.DistanceToPlayer; //for attach calculations
+
+            GetComponent<ConstantForce>().force *= ConnectedAsteroid.HookToObject.acceleration; // Add force when attached
+
+            ConnectionPlacmentCalculations();  
+
+        }        
+        FindClosestObj(); //Searches when not attached
 
     }
 
+    void CalcForce()
+    {
+        Transform point1 = transform;
+        Transform point2 = ConnectedAsteroid.transform;
+        Vector3 d = point1.position - point2.position;
+        Vector3 direction = d.normalized;
 
+        //Spring3D spring = GetSpring(graph.edges[i]);
+        float displacement = attractDistance - d.magnitude;
 
-    public void ConnectionControllSpring(bool create) //For connection line placment
+        point1.GetComponent<Rigidbody>().AddForce(direction * (attractForce * displacement * 0.5f), ForceMode.Acceleration);
+    }
+
+    public void ConnectionControll(bool create) //For connection line placment
     {
         if (create) //create to do 2 metods in one (creates and keeps connection)
         {
             if (!CurrentConnection) //for not spaming. We use function OnPress to create and OnDown to change position
             {
-                CurrentConnection = Instantiate(Connecton, Vector3.Lerp(transform.position, closestHookTo.transform.position, 0.5f), Connecton.transform.rotation);
+                CurrentConnection = Instantiate(Connecton, Vector3.Lerp(transform.position, ConnectedAsteroid.transform.position, 0.5f), Connecton.transform.rotation);
                 CurrentConnection.AddComponent<ObjectFollow>();
 
                 //Setting Color of Connection
                 CurrentConnection.GetComponent<MeshRenderer>().material.SetColor("_BallColor", playerStats.color);
-                CurrentConnection.GetComponent<MeshRenderer>().material.SetColor("_AsteroidColor", closestHookTo.HookToObject.color);
+                CurrentConnection.GetComponent<MeshRenderer>().material.SetColor("_AsteroidColor", ConnectedAsteroid.HookToObject.color);
 
             }
-            /*if (!gameObject.GetComponent<Joint>()) //We need to change position and rotation only when we on connection process. When we hookedTo, Hierarcy does its job
-            {
-                ConnectionPlacmentCalculations();
-            }
-            else
-            {
-                CurrentConnection.transform.position = Vector3.Lerp(transform.position, GetComponent<Joint>().connectedBody.transform.position, 0.5f); //places object in the middle
-            }*/
+
             ConnectionPlacmentCalculations();
         }
         else //for destroying
@@ -461,14 +449,11 @@ public class Player : MonoBehaviour
         Vector3 vector3;
         if (!gameObject.GetComponent<Joint>())
         {
-            vector3 = closestHookTo.transform.position;
-            //CurrentConnection.transform.position = Vector3.Lerp(transform.position, closestHookTo.transform.position, 0.5f); //place object in the middle
+            vector3 = ConnectedAsteroid.transform.position;
         }
         else
-
         {
             vector3 = GetComponent<Joint>().connectedBody.transform.position;
-            //CurrentConnection.transform.position = Vector3.Lerp(transform.position, GetComponent<Joint>().connectedBody.transform.position, 0.5f);
         }
 
         CurrentConnection.transform.position = Vector3.Lerp(transform.position, vector3, 0.5f); //place object in the middle
@@ -479,9 +464,7 @@ public class Player : MonoBehaviour
         Quaternion rotation = Quaternion.LookRotation(relativePos, Vector3.up);
         CurrentConnection.transform.rotation = rotation;
         CurrentConnection.transform.up = CurrentConnection.transform.forward;
-        CurrentConnection.transform.Rotate(new Vector3(0, 90, 0));
-
-        
+        CurrentConnection.transform.Rotate(new Vector3(0, 90, 0));        
 
 
         // Difference in Distance between player/hookTO and both ends on connection object
@@ -507,7 +490,7 @@ public class Player : MonoBehaviour
         }
     }
 
-    void SlowMotionControll(bool StartSlowMo = false)
+    void SlowMotionControll()
     {
 
         if (StartSlowMo)
@@ -520,8 +503,7 @@ public class Player : MonoBehaviour
             Time.timeScale = Mathf.Clamp(Time.timeScale, 0, 1);
             Time.fixedDeltaTime = 0.01f * Time.timeScale;
         }
-        print("scale " +Time.timeScale);
-        print("fixed " + Time.fixedDeltaTime);
+
 
     }
 

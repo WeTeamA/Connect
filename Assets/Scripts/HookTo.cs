@@ -6,6 +6,7 @@ using UnityEngine;
 [System.Serializable]
 public class HookToObject
 {
+
     [HideInInspector] public float DistanceToPlayer;
     [HideInInspector] public GameObject player;
 
@@ -26,78 +27,141 @@ public class HookToObject
     [HideInInspector] public bool IsClosest = false; //For understanding, if this asteroid is the closest and it must take selected particle
 }
 
+[System.Serializable]
+public class Explosion
+{
+    public float power;
+    public float radius;
+    public float Count;
+}
 
+[RequireComponent(typeof(Rigidbody))]
 public class HookTo : MonoBehaviour
 {
 
     public HookToObject HookToObject;
 
+    bool GoToPlayer;
+    bool Broken;
 
-    GameObject SelecctedParticle; //shows, that it is the closest
+    GameObject SelectedParticle; //shows, that it is the closest
 
+    [SerializeField] Explosion explosion;
     
     // Start is called before the first frame update
     void Start()
     {
-        if (!GetComponent<Rigidbody>())
-        {
-            gameObject.AddComponent<Rigidbody>();
-            gameObject.GetComponent<Rigidbody>().useGravity = false;
-            gameObject.GetComponent<Rigidbody>().isKinematic = true;
-        }
+        
 
-        SelecctedParticle = GameObject.FindGameObjectWithTag("SelectParticle");
+        gameObject.GetComponent<Rigidbody>().useGravity = false;
+        gameObject.GetComponent<Rigidbody>().isKinematic = true;
 
-        gameObject.tag = "hookTo";  //Allpy's correct tag, so player yag could find it
+        SelectedParticle = GameObject.FindGameObjectWithTag("SelectParticle");
+
+        gameObject.tag = "hookTo";  //Apply's correct tag, so player tag could find it
+
         HookToObject.player = GameObject.FindGameObjectWithTag("Player");
         HookToObject.HookToParts = new List<GameObject>();
-        for (int i = 0; i < gameObject.transform.childCount; i++)
-        {
-            HookToObject.HookToParts.Add(gameObject.transform.GetChild(i).gameObject); // Adding all parts
 
+
+
+        foreach (Transform part in transform)
+        {
             //Setting parts 
-            HookToObject.HookToParts[i].GetComponent<FixedJoint>().breakForce = HookToObject.BreakForce;
-            HookToObject.HookToParts[i].tag = "AstroParts";
+            part.GetComponent<FixedJoint>().breakForce = HookToObject.BreakForce;
+            part.tag = "AstroParts";
+
+            HookToObject.HookToParts.Add(part.gameObject); // Adding all parts            
         }
-        HookToObject.color = HookToObject.HookToParts[0].GetComponent<MeshRenderer>().material.GetColor("_GlowColor");
-        
+
+        HookToObject.color = HookToObject.HookToParts[0].GetComponent<MeshRenderer>().material.GetColor("_GlowColor");        
+    }
+
+    void CheckingStability()
+    {
+        if(!Broken)
+            foreach (GameObject part in HookToObject.HookToParts)
+            {
+
+                if (!part.GetComponent<Joint>()) //if one of parts breaks
+                {
+                    StartCoroutine(DestroyAsteroid());
+                    break;
+                }
+            }
 
     }
 
-    void Desctruction()
+    IEnumerator DestroyAsteroid()
     {
-        foreach (GameObject part in HookToObject.HookToParts)
+        Broken = true;
+        foreach (GameObject brokenPart in HookToObject.HookToParts)
         {
-            if (!part.GetComponent<Joint>()) //if one of parts breaks
+            if (brokenPart.GetComponent<Joint>())
             {
-                foreach (GameObject brokenPart in HookToObject.HookToParts)
-                {
-                    if (brokenPart.GetComponent<Joint>())
-                    {
-
-                        Destroy(brokenPart.GetComponent<Joint>());
-                    }
-                }
-                HookToObject.player.GetComponent<Player>().hookTo.Remove(this);
-                if (HookToObject.player.GetComponent<Joint>())
-                {
-                    if (HookToObject.player.GetComponent<Joint>().connectedBody == GetComponent<Rigidbody>())
-                    {
-                        Destroy(HookToObject.player.GetComponent<Joint>());
-                        HookToObject.player.GetComponent<Player>().StopReadingInput = true;
-                        HookToObject.player.GetComponent<Player>().ConnectionControllSpring(false);
-                    }
-                }
-
+                Destroy(brokenPart.GetComponent<Joint>());
             }
         }
+
+        Player player = HookToObject.player.GetComponent<Player>();
+
+        player.hookTo.Remove(this);
+
+        if(player.ConnectedAsteroid == this)
+            player.EndConnection();
+
+        for (int i = 0; i < explosion.Count; i++)
+        {
+            Explosion();
+        }
+
+        yield return new WaitForSeconds(2);
+
+        foreach (GameObject part in HookToObject.HookToParts)
+        {
+            part.GetComponent<Rigidbody>().isKinematic = true;
+            part.tag = "BrokenPart";
+        }
+        GoToPlayer = true;
+    }
+
+    void Explosion()
+    {
+        Vector3 explosionPos = transform.position;
+
+        Collider[] colliders = Physics.OverlapSphere(explosionPos, explosion.radius);
+
+        foreach (Collider hit in colliders)
+        {
+            if(hit.tag == "AstroParts")
+            {
+                Rigidbody rb = hit.GetComponent<Rigidbody>();
+
+                if (rb != null)
+                    rb.AddExplosionForce(explosion.power, explosionPos, explosion.radius);
+            }
+        }
+        StopCoroutine(DestroyAsteroid());
     }
 
     public void TakeParticle()
     {
         if (HookToObject.IsClosest)
         {
-            SelecctedParticle.transform.position = Vector3.MoveTowards(SelecctedParticle.transform.position, transform.position, Time.deltaTime * 100);
+            SelectedParticle.transform.position = Vector3.MoveTowards(SelectedParticle.transform.position, transform.position, Time.deltaTime * 100);
+        }
+    }
+
+    void ReturnToPlayer()
+    {
+        if (GoToPlayer)
+        {
+            foreach (GameObject part in HookToObject.HookToParts)
+            {
+                if(part)
+                    part.transform.position = Vector3.MoveTowards(part.transform.position, HookToObject.player.transform.position, Time.deltaTime * 5);
+
+            }
         }
     }
 
@@ -105,6 +169,7 @@ public class HookTo : MonoBehaviour
     {
         HookToObject.DistanceToPlayer = Vector3.Distance(transform.position, HookToObject.player.transform.position);
         TakeParticle();
-        Desctruction();
+        CheckingStability();
+        ReturnToPlayer();
     }
 }

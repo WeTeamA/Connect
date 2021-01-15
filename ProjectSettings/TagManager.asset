@@ -9,6 +9,7 @@ TagManager:
   - AstroParts
   - Target
   - SelectParticle
+  - BrokenPart
   layers:
   - Default
   - TransparentFX
