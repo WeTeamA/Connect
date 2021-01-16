@@ -121,6 +121,7 @@ public class HookTo : MonoBehaviour
         {
             part.GetComponent<Rigidbody>().isKinematic = true;
             part.tag = "BrokenPart";
+            part.layer = 11;
         }
         GoToPlayer = true;
     }
@@ -159,7 +160,7 @@ public class HookTo : MonoBehaviour
             foreach (GameObject part in HookToObject.HookToParts)
             {
                 if(part)
-                    part.transform.position = Vector3.MoveTowards(part.transform.position, HookToObject.player.transform.position, Time.deltaTime * 5);
+                    part.transform.position = Vector3.MoveTowards(part.transform.position, HookToObject.player.transform.position, Time.deltaTime * 20);
 
             }
         }

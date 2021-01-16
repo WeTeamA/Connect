@@ -31,10 +31,15 @@ public class Distruction : MonoBehaviour
             gameObject.GetComponent<MeshCollider>().isTrigger = true;
             gameObject.GetComponent<Rigidbody>().AddForce((Corner - gameObject.transform.position) * 0.1f);
             if (gameObject.transform.position.x > Camera.main.transform.position.x-0.2f || t>5)
-                 {
-                     gameObject.SetActive(false);
+            {
+                gameObject.SetActive(false);
+                GameController.manager.IncreaseScore(50);
+                if (name == "Heart")
+                {
+                    GameController.manager.EndLevel(false);
+                }
                 //Тут дописать пульсацию UI счетчика очков
-                 }
+            }
         }
     }
 }

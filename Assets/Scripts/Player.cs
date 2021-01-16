@@ -13,7 +13,7 @@ public class PlayerStats
     [HideInInspector] public Vector3 Velocity;
     [Header("Speed of rotation. ReadOnly")]
     public float CurrentSpeed;
-    [Header("Force, that rotates player to orbit position, when he fly away. ReadOnly")]
+    //[Header("Force, that rotates player to orbit position, when he fly away. ReadOnly")]
     public float CurrentAngularSpeed;
 
     //For calculations
@@ -22,43 +22,20 @@ public class PlayerStats
 
     [Header("Player MeshRenderer. Write")]
     public GameObject PlayerModel;
-    [Header("Shows color of player (For connection). ReadOnly")]
+
+    //[Header("Shows color of player (For connection). ReadOnly")]
     [ColorUsage(true, true)]
     public Color color;
 
     //for test
-    [Header("Shows minimum velocity in this game. Good for setting death velocity. ReadOnly")]
-    public float minVelocity = 100;
-    //public float maxVelocity = 0;
+    //[Header("Shows minimum velocity in this game. Good for setting death velocity. ReadOnly")]
+    //public float minVelocity = 100;
 
     //Slow motion
     [Header("Strength of slow mo. (x > 1) - faster, (x < 1) - slower. Write")]
     public float SlowDownFactor;
     [Header("How long slowMo will last. Write")]
     public float SlowDownLength;
-
-
-    [Header("Spring strength in start of connection. Write")]
-    public float StartSpring = 10;
-    [Header("Spring strength that we want. Write")]
-    public float TargetSpring = 10;
-    [Header("Spring strength multiplier. As more, than faster we will reach targer spring force. Write")]
-    public float springModifier;
-
-
-    [Header("Spring damper (makes spring smoother) in start of connection. Write")]
-    public float StartDamper = 0.2f;
-    [Header("Spring damper (makes spring smoother) that we want. Write")]
-    public float TargetDamper = 0.2f;
-    [Header("Spring damper (makes spring smoother) multiplier. As more, than faster we will reach targer damper. Write")]
-    public float damperModifier;
-
-    //public float NewAngle;
-
-
-
-
-
 
 }
 [RequireComponent(typeof(Rigidbody))]
@@ -70,6 +47,8 @@ public class Player : MonoBehaviour
 
     Rigidbody rigidbody;
     bool StartSlowMo;
+
+    public static Player player; 
 
     [HideInInspector] public List<HookTo> hookTo; //Contains all hook to objects
     [Header("True - android input, False - PC input. Write")]
@@ -87,7 +66,6 @@ public class Player : MonoBehaviour
     [SerializeField] GameObject Connecton; //ConnectionPrefab
     GameObject CurrentConnection; 
 
-
     HookTo LastConnected; //for applyings aditional force when closest hookTo changed
 
 
@@ -100,9 +78,16 @@ public class Player : MonoBehaviour
 
     bool Connecting;
 
+    private void Awake()
+    {
+        player = this;
+    }
+
     // Start is called before the first frame update
     void Start()
     {
+        Time.timeScale = 1;
+
         Connecting = false;
         tag = "Player";
 
@@ -138,6 +123,10 @@ public class Player : MonoBehaviour
 
         //
         StopReadingInput = false;
+
+
+        //Add Force At start
+        rigidbody.AddForce(transform.forward * 1, ForceMode.Impulse);
     }
 
 
@@ -148,7 +137,7 @@ public class Player : MonoBehaviour
     {
 
         PlayerMovement();
-
+        
         HookAction();
         StatsCollect();
         SlowMotionControll(); //For normalizing time after slow motion effect
@@ -157,10 +146,8 @@ public class Player : MonoBehaviour
         time += Time.deltaTime;
         if (time > 2)
         {
-            if (playerStats.minVelocity > playerStats.CurrentSpeed)
-            {
-                playerStats.minVelocity = playerStats.CurrentSpeed;
-            }
+            DeathControll();
+            
         }
         //
     }
@@ -169,20 +156,28 @@ public class Player : MonoBehaviour
     {
         if(collision.transform.tag == "AstroParts")
         {
-            DeathControll();
+            //DeathControll();
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.transform.tag == "BrokenPart")
+        if (other.gameObject.tag == "BrokenPart")
         {
             Destroy(other.gameObject);
-            rigidbody.mass += 0.1f;
-            playerStats.StandartSpeed += 0.25f;
-            transform.localScale += new Vector3(0.01f, 0.01f, 0.01f);
-            playerStats.PlayerModel.transform.localScale += new Vector3(0.1f, 0.1f, 0.1f);
+
+            ChangePlayer(0.1f,0.25f,0.1f);
+            GameController.manager.IncreaseScore(10);
         }
+    }
+
+    void ChangePlayer(float mass, float speed, float size)
+    {
+        rigidbody.mass += mass;
+        playerStats.StandartSpeed += speed;
+        Vector3 sizeV = new Vector3(size, size, size);
+        transform.localScale += sizeV / 10;
+        playerStats.PlayerModel.transform.localScale += sizeV;
     }
 
     void StatsCollect() //Calculates all stats for player
@@ -483,12 +478,17 @@ public class Player : MonoBehaviour
 
     void DeathControll() //DeathAction
     {
+
+        ChangePlayer(-0.01f * Time.deltaTime,- 0.025f * Time.deltaTime, -0.01f * Time.deltaTime);
+
         if (playerStats.CurrentSpeed < 0.4f)
         {
             Instantiate(DeathExplosion, transform.position, transform.rotation).Play();
+            GameController.manager.EndLevel(true);
             gameObject.SetActive(false);
         }
     }
+
 
     void SlowMotionControll()
     {

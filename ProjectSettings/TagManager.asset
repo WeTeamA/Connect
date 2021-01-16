@@ -10,6 +10,7 @@ TagManager:
   - Target
   - SelectParticle
   - BrokenPart
+  - Manager
   layers:
   - Default
   - TransparentFX
@@ -22,7 +23,7 @@ TagManager:
   - ScreenCorner
   - CosmoParts
   - Player
-  - 
+  - BrokenPart
   - 
   - 
   - 
