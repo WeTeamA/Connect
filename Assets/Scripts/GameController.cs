@@ -13,17 +13,20 @@ public class GameController : MonoBehaviour
     [SerializeField] GameObject GameOver;
     [SerializeField] GameObject currentUI;
 
-    [SerializeField] bool changeTime;
+    bool changeTime;
 
     [SerializeField] TextMeshProUGUI ScoreTable;
     [SerializeField] TextMeshProUGUI GameOverText;
+    [SerializeField] TextMeshProUGUI HighScore;
+
 
     public static GameController manager;
 
     private void Awake()
     {
         manager = this;
-        //EndLevel(false);
+        Scene scene = SceneManager.GetActiveScene();
+        HighScore.text = PlayerPrefs.GetInt("HighScore" + scene.buildIndex).ToString();
     }
 
     public void PauseGame()
@@ -52,9 +55,13 @@ public class GameController : MonoBehaviour
 
     public void EndLevel(bool Lost)
     {
-        changeTime = true;
-        Player.player.EndConnection();
 
+
+        //ScowMo
+        changeTime = true;
+
+        //Disables player
+        Player.player.EndConnection();
         Player.player.enabled = false;
 
         if (Lost)
@@ -65,7 +72,18 @@ public class GameController : MonoBehaviour
         {
             GameOverText.text = "Well Done!";
         }
+
         ChangeUI(GameOver);
+
+        //Set HighScore
+        Scene scene = SceneManager.GetActiveScene();
+        int Score = GetScore();
+        if (PlayerPrefs.GetInt("HighScore" + scene.buildIndex) < Score)
+        {
+            PlayerPrefs.SetInt("HighScore" + scene.buildIndex, Score);
+            HighScore.text = Score.ToString();
+
+        }
     }
 
     public void ResumeGame()
