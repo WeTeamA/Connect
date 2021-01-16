@@ -145,6 +145,7 @@ public class GameController : MonoBehaviour
             else
             {
                 StopTime();
+                HighScore.gameObject.SetActive(true);
                 changeTime = false;
             }
         }
